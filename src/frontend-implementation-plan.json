@@ -1,0 +1,160 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Add installable PWA support, offline app shell, and local notifications",
+  "requirements": [
+    {
+      "id": "REQ-12",
+      "summary": "Make the app installable (PWA) via manifest, icons, and required HTML metadata.",
+      "acceptanceCriteria": [
+        "The app includes a valid web app manifest (webmanifest) with name, short_name, start_url, display=standalone, theme_color, background_color, and icons.",
+        "frontend/index.html links the manifest and includes appropriate meta tags for PWA installation.",
+        "The app provides at least 192x192 and 512x512 app icons referenced by the manifest.",
+        "On supported browsers (e.g., Chrome Android), the app is eligible for Add to Home Screen and launches in standalone mode after installation."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/manifest.webmanifest",
+          "operation": "create",
+          "description": "Add a valid web app manifest with name/short_name, start_url, display=standalone, theme_color, background_color, and icons referencing frontend/public/assets/generated/pwa-icon.dim_192x192.png and frontend/public/assets/generated/pwa-icon.dim_512x512.png."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Link the web app manifest and add PWA-related metadata (including theme color and install-related tags) required for installability."
+        },
+        {
+          "path": "frontend/public/assets/generated/pwa-icon.dim_192x192.png",
+          "operation": "create",
+          "description": "Add the generated PWA app icon asset (192x192) at this exact path and ensure it matches the manifest reference."
+        },
+        {
+          "path": "frontend/public/assets/generated/pwa-icon.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated PWA app icon asset (512x512) at this exact path and ensure it matches the manifest reference."
+        }
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "summary": "Register a service worker and provide minimal offline app-shell caching with an offline fallback.",
+      "acceptanceCriteria": [
+        "A service worker is registered from editable application code (do not modify immutable paths).",
+        "When the app is installed, reopening it while offline shows either cached app shell or an explicit offline fallback page/message.",
+        "Service worker updates are handled safely (new SW activates without breaking navigation; users are not stuck on an old cached version indefinitely)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/sw.js",
+          "operation": "create",
+          "description": "Add a minimal service worker that caches the app shell (main HTML/CSS/JS and key static assets) and serves a basic offline fallback for navigations when offline."
+        },
+        {
+          "path": "frontend/public/offline.html",
+          "operation": "create",
+          "description": "Add a simple offline fallback page/message that the service worker can return for navigation requests when the cache cannot satisfy the request."
+        },
+        {
+          "path": "frontend/src/pwa/registerServiceWorker.ts",
+          "operation": "create",
+          "description": "Implement service worker registration from editable application code, including safe update handling (detect new SW, prompt/auto-reload strategy, and avoid indefinite staleness)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire service worker registration into the app startup (without modifying frontend/src/main.tsx) by calling the registration utility from a top-level component effect."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Add a dismissible in-app install prompt UX using beforeinstallprompt and standalone detection.",
+      "acceptanceCriteria": [
+        "When the browser fires beforeinstallprompt, the UI shows an install call-to-action.",
+        "Clicking the install call-to-action triggers the native install prompt.",
+        "After installation (or when running in standalone), the install call-to-action is hidden or replaced with an 'Installed' indicator.",
+        "The install UI can be dismissed and does not reappear immediately in the same session after dismissal."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pwa/usePwaInstallPrompt.ts",
+          "operation": "create",
+          "description": "Create a hook that listens for beforeinstallprompt, exposes an install trigger, detects standalone/installed state, and tracks per-session dismissal to avoid immediate reappearance."
+        },
+        {
+          "path": "frontend/src/components/pwa/InstallBanner.tsx",
+          "operation": "create",
+          "description": "Add a small, dismissible install banner/button component that uses the PWA install hook to show CTA, trigger prompt, and display an Installed indicator when appropriate."
+        },
+        {
+          "path": "frontend/src/components/AppShell.tsx",
+          "operation": "modify",
+          "description": "Render the install banner in a visible, non-intrusive place within the existing layout (e.g., near header/main content) so it is available across pages without introducing a new route."
+        },
+        {
+          "path": "frontend/src/lib/fa.ts",
+          "operation": "modify",
+          "description": "Add localized Farsi strings for the install CTA, Installed indicator, and dismiss action."
+        }
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "summary": "Add Settings UI for Web Notifications permission, status display, and test notification.",
+      "acceptanceCriteria": [
+        "Settings page includes a Notifications section with: permission status, a button to request permission, and a button to send a test notification.",
+        "If permission is denied, the UI clearly indicates that notifications are blocked and the test notification action is disabled or explains why it cannot run.",
+        "If permission is granted, clicking test sends a visible system notification with a sensible title and body.",
+        "No notification permission prompt is shown automatically on page load; it is only triggered by an explicit user action."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/notifications/useNotifications.ts",
+          "operation": "create",
+          "description": "Create a hook wrapping the Web Notifications API to read permission status, request permission only on explicit user action, and send a test notification when allowed."
+        },
+        {
+          "path": "frontend/src/components/settings/NotificationsSection.tsx",
+          "operation": "create",
+          "description": "Add a Settings section UI that shows notification permission status, a request-permission button, and a test-notification button with clear disabled/blocked states."
+        },
+        {
+          "path": "frontend/src/pages/SettingsPage.tsx",
+          "operation": "modify",
+          "description": "Wire the Notifications section into the existing Settings page (no new top-level pages/routes)."
+        },
+        {
+          "path": "frontend/src/lib/fa.ts",
+          "operation": "modify",
+          "description": "Add localized Farsi strings for notification permission states, request permission action, and test notification labels/messages."
+        }
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "summary": "Show deduplicated in-app reminders (and optional system notifications) for meaningful events derived from existing loaded tasks/work items while app is open.",
+      "acceptanceCriteria": [
+        "When the app is open and the user has granted notification permission, the app can emit a system notification for at least one meaningful event derived from existing state (e.g., detecting overdue items on load or after data refresh).",
+        "When permission is not granted, the same event is still surfaced as an in-app notification/toast (no silent failure).",
+        "Reminder behavior avoids spamming: the same reminder is not repeatedly shown on every render; it is deduplicated per session (or with a simple timestamp/seen tracking in localStorage)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/reminders/useReminders.ts",
+          "operation": "create",
+          "description": "Implement reminder detection using existing React Query state (e.g., overdue tasks via dueDate and new/overdue work inbox items), deduplicate reminders per session or via localStorage, and emit either an in-app toast or system notification when permission is granted."
+        },
+        {
+          "path": "frontend/src/components/reminders/RemindersListener.tsx",
+          "operation": "create",
+          "description": "Create a non-visual component that subscribes to existing data hooks (tasks and work inbox items) and triggers reminders through the reminders hook."
+        },
+        {
+          "path": "frontend/src/components/AppShell.tsx",
+          "operation": "modify",
+          "description": "Wire the RemindersListener into the app shell so reminders can run while the user navigates the app (without modifying restricted files and without creating orphan components)."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "kind": "build_request",
+  "title": "Add installable PWA support and local notifications",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-12",
+      "text": "Make the web app installable on mobile (PWA / Add to Home Screen) by adding a web app manifest, app icons, and required HTML metadata.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "اعلان نوتیفیکیشن و قابلیت نصب در گوشی را هم اضافه کن"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The app includes a valid web app manifest (webmanifest) with name, short_name, start_url, display=standalone, theme_color, background_color, and icons.",
+        "frontend/index.html links the manifest and includes appropriate meta tags for PWA installation.",
+        "The app provides at least 192x192 and 512x512 app icons referenced by the manifest.",
+        "On supported browsers (e.g., Chrome Android), the app is eligible for Add to Home Screen and launches in standalone mode after installation."
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Add service worker registration and a minimal service worker so the installed app has an app-shell offline experience (at minimum: caches the main HTML/CSS/JS bundle and shows a basic offline fallback).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "اعلان نوتیفیکیشن و قابلیت نصب در گوشی را هم اضافه کن"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A service worker is registered from editable application code (do not modify immutable paths).",
+        "When the app is installed, reopening it while offline shows either cached app shell or an explicit offline fallback page/message.",
+        "Service worker updates are handled safely (new SW activates without breaking navigation; users are not stuck on an old cached version indefinitely)."
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Add an in-app install UX: detect when the app is installable (beforeinstallprompt) and show a dismissible banner/button that triggers the installation prompt, plus a state indicating when the app is already installed.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "اعلان نوتیفیکیشن و قابلیت نصب در گوشی را هم اضافه کن"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When the browser fires beforeinstallprompt, the UI shows an install call-to-action.",
+        "Clicking the install call-to-action triggers the native install prompt.",
+        "After installation (or when running in standalone), the install call-to-action is hidden or replaced with an 'Installed' indicator.",
+        "The install UI can be dismissed and does not reappear immediately in the same session after dismissal."
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Add local (device) notification support using the Web Notifications API: provide a Settings section to request permission, show current permission status, and send a test notification.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "اعلان نوتیفیکیشن و قابلیت نصب در گوشی را هم اضافه کن"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Settings page includes a Notifications section with: permission status, a button to request permission, and a button to send a test notification.",
+        "If permission is denied, the UI clearly indicates that notifications are blocked and the test notification action is disabled or explains why it cannot run.",
+        "If permission is granted, clicking test sends a visible system notification with a sensible title and body.",
+        "No notification permission prompt is shown automatically on page load; it is only triggered by an explicit user action."
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "text": "Trigger user-visible reminders inside the app (and optionally as system notifications when permission is granted) for important items while the app is open, using existing data already loaded in the UI (e.g., due work inbox items and incomplete tasks).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "اعلان نوتیفیکیشن و قابلیت نصب در گوشی را هم اضافه کن"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When the app is open and the user has granted notification permission, the app can emit a system notification for at least one meaningful event derived from existing state (e.g., detecting overdue items on load or after data refresh).",
+        "When permission is not granted, the same event is still surfaced as an in-app notification/toast (no silent failure).",
+        "Reminder behavior avoids spamming: the same reminder is not repeatedly shown on every render; it is deduplicated per session (or with a simple timestamp/seen tracking in localStorage)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or anything in frontend/src/components/ui.",
+    "Backend must remain a single Motoko actor (no additional backend services).",
+    "Do not add third-party push notification providers or external messaging services."
+  ],
+  "nonGoals": [
+    "Implementing true web push notifications (server-initiated push while the app is closed) is out of scope.",
+    "Implementing OS-level background scheduling on iOS/Android (beyond what standard PWA APIs allow) is out of scope.",
+    "Adding external channel integrations (Instagram/Telegram/WhatsApp) is out of scope."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Flat vector app icon on a transparent background (pwa-icon.dim_192x192.png)",
+      "Flat vector app icon on a transparent background (pwa-icon.dim_512x512.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

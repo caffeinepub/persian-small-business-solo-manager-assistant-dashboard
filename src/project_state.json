@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "ساخت یک ابزار/دستیار مدیریتی به زبان فارسی برای کمک عملی و کارآمد به مدیر یک کسب‌وکار کوچک (با وب‌سایت و چندین کانال ارتباطی) که به‌تنهایی کسب‌وکار را مدیریت می‌کند.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Flat vector app icon on a transparent background (pwa-icon.dim_192x192.png)\n- Flat vector app icon on a transparent background (pwa-icon.dim_512x512.png)",
+  "existing_features": [
+    {
+      "id": "feature-create-a-persian-language-fa-web-app-that-acts-as-an-all-in-one-assistant-dashboard-for-a-solo-manager-of-a-small-business-with-a-website-and-multiple-communication-channels",
+      "title": "Create a Persian-language (fa) web app that acts as an all-in-one assistant dashboard for a solo manager of a small business with a website and multiple communication channels.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-internet-identity-login-and-session-handling-so-the-app-is-private-per-user-each-principal-sees-only-their-own-data",
+      "title": "Implement Internet Identity login and session handling so the app is private per user (each principal sees only their own data).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-unified-work-inbox-module-where-the-user-can-manually-log-and-manage-incoming-items-from-multiple-channels-e-g-website-form-instagram-telegram-whatsapp-phone-without-requiring-external-integrations",
+      "title": "Add a unified 'Work Inbox' module where the user can manually log and manage incoming items from multiple channels (e.g., website form, Instagram, Telegram, WhatsApp, phone) without requiring external integrations.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-tasks-module-for-daily-operations-with-task-lists-due-dates-priority-and-a-simple-today-view-optimized-for-a-solo-operator",
+      "title": "Add a Tasks module for daily operations with task lists, due dates, priority, and a simple 'Today' view optimized for a solo operator.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-content-posting-planner-module-for-planning-content-across-multiple-channels-with-a-calendar-like-list-view-no-external-posting-integrations",
+      "title": "Add a Content/Posting Planner module for planning content across multiple channels with a calendar-like list view (no external posting integrations).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-website-channels-settings-module-to-track-the-user-s-properties-website-s-and-channel-profiles-as-structured-records-name-type-url-handle-notes-used-throughout-the-app-for-selection-lists",
+      "title": "Add a 'Website & Channels' settings module to track the user’s properties (website(s) and channel profiles) as structured records (name, type, URL/handle, notes), used throughout the app for selection lists.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-lightweight-notes-playbook-module-for-storing-reusable-snippets-and-checklists-e-g-standard-replies-procedures-optimized-for-quick-copy-paste",
+      "title": "Add a lightweight Notes/Playbook module for storing reusable snippets and checklists (e.g., standard replies, procedures), optimized for quick copy/paste.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-an-onboarding-flow-first-run-wizard-in-persian-that-helps-the-user-set-up-their-website-channels-and-start-with-a-few-example-templates-tasks-and-notes-that-can-be-removed",
+      "title": "Provide an onboarding flow (first-run wizard) in Persian that helps the user set up their website/channels and start with a few example templates (tasks and notes) that can be removed.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-coherent-visual-theme-non-blue-non-purple-suitable-for-a-professional-persian-business-assistant-including-rtl-layout-support-typography-spacing-and-consistent-component-styling-across-all-screens",
+      "title": "Create a coherent visual theme (non-blue/non-purple) suitable for a professional Persian business assistant, including RTL layout support, typography, spacing, and consistent component styling across all screens.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-basic-data-export-import-to-help-a-solo-manager-back-up-and-move-their-data-json-export-and-json-import-for-their-own-records",
+      "title": "Add basic data export/import to help a solo manager back up and move their data (JSON export and JSON import) for their own records.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-include-required-static-images-as-app-assets-and-render-them-in-the-ui-e-g-sign-in-onboarding-and-empty-states-from-frontend-public-assets-generated-do-not-serve-images-via-the-backend",
+      "title": "Generate and include required static images as app assets, and render them in the UI (e.g., sign-in/onboarding and empty states) from frontend/public/assets/generated (do not serve images via the backend).",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-web-app-installable-on-mobile-pwa-add-to-home-screen-by-adding-a-web-app-manifest-app-icons-and-required-html-metadata",
+      "title": "Make the web app installable on mobile (PWA / Add to Home Screen) by adding a web app manifest, app icons, and required HTML metadata.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-service-worker-registration-and-a-minimal-service-worker-so-the-installed-app-has-an-app-shell-offline-experience-at-minimum-caches-the-main-html-css-js-bundle-and-shows-a-basic-offline-fallback",
+      "title": "Add service worker registration and a minimal service worker so the installed app has an app-shell offline experience (at minimum: caches the main HTML/CSS/JS bundle and shows a basic offline fallback).",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-in-app-install-ux-detect-when-the-app-is-installable-beforeinstallprompt-and-show-a-dismissible-banner-button-that-triggers-the-installation-prompt-plus-a-state-indicating-when-the-app-is-already-installed",
+      "title": "Add an in-app install UX: detect when the app is installable (beforeinstallprompt) and show a dismissible banner/button that triggers the installation prompt, plus a state indicating when the app is already installed.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-local-device-notification-support-using-the-web-notifications-api-provide-a-settings-section-to-request-permission-show-current-permission-status-and-send-a-test-notification",
+      "title": "Add local (device) notification support using the Web Notifications API: provide a Settings section to request permission, show current permission status, and send a test notification.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-trigger-user-visible-reminders-inside-the-app-and-optionally-as-system-notifications-when-permission-is-granted-for-important-items-while-the-app-is-open-using-existing-data-already-loaded-in-the-ui-e-g-due-work-inbox-items-and-incomplete-tasks",
+      "title": "Trigger user-visible reminders inside the app (and optionally as system notifications when permission is granted) for important items while the app is open, using existing data already loaded in the UI (e.g., due work inbox items and incomplete tasks).",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "طراحی و ساخت یک دستیار/داشبورد فارسی برای مدیریت یکپارچه کارهای روزانه کسب‌وکار کوچک (وب‌سایت + کانال‌های متعدد) برای یک مدیر تنها",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "اضافه‌کردن اعلان‌ها (Notifications) برای آیتم‌ها/کارها و رویدادهای مهم داخل اپ",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "قابلیت نصب روی گوشی (PWA/Add to Home Screen) برای استفاده شبیه اپ موبایل",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Persian small-business solo manager assistant dashboard",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

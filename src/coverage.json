@@ -1,0 +1,124 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-10T06:46:31.076Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 5,
+    "implemented": 5,
+    "items": [
+      {
+        "id": "REQ-12",
+        "summary": "Make the web app installable on mobile (PWA / Add to Home Screen) by adding a web app manifest, app icons, and required HTML metadata.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/manifest.webmanifest",
+          "frontend/index.html",
+          "frontend/public/assets/generated/pwa-icon.dim_192x192.png",
+          "frontend/public/assets/generated/pwa-icon.dim_512x512.png"
+        ],
+        "matchedFiles": [
+          "frontend/public/manifest.webmanifest",
+          "frontend/index.html",
+          "frontend/public/assets/generated/pwa-icon.dim_192x192.png",
+          "frontend/public/assets/generated/pwa-icon.dim_512x512.png"
+        ]
+      },
+      {
+        "id": "REQ-13",
+        "summary": "Add service worker registration and a minimal service worker so the installed app has an app-shell offline experience (at minimum: caches the main HTML/CSS/JS bundle and shows a basic offline fallback).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/sw.js",
+          "frontend/public/offline.html",
+          "frontend/src/pwa/registerServiceWorker.ts",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/public/sw.js",
+          "frontend/public/offline.html",
+          "frontend/src/pwa/registerServiceWorker.ts"
+        ]
+      },
+      {
+        "id": "REQ-14",
+        "summary": "Add an in-app install UX: detect when the app is installable (beforeinstallprompt) and show a dismissible banner/button that triggers the installation prompt, plus a state indicating when the app is already installed.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pwa/usePwaInstallPrompt.ts",
+          "frontend/src/components/pwa/InstallBanner.tsx",
+          "frontend/src/components/AppShell.tsx",
+          "frontend/src/lib/fa.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/pwa/usePwaInstallPrompt.ts",
+          "frontend/src/components/pwa/InstallBanner.tsx",
+          "frontend/src/components/AppShell.tsx",
+          "frontend/src/lib/fa.ts"
+        ]
+      },
+      {
+        "id": "REQ-15",
+        "summary": "Add local (device) notification support using the Web Notifications API: provide a Settings section to request permission, show current permission status, and send a test notification.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/notifications/useNotifications.ts",
+          "frontend/src/components/settings/NotificationsSection.tsx",
+          "frontend/src/pages/SettingsPage.tsx",
+          "frontend/src/lib/fa.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/notifications/useNotifications.ts",
+          "frontend/src/components/settings/NotificationsSection.tsx",
+          "frontend/src/pages/SettingsPage.tsx",
+          "frontend/src/lib/fa.ts"
+        ]
+      },
+      {
+        "id": "REQ-16",
+        "summary": "Trigger user-visible reminders inside the app (and optionally as system notifications when permission is granted) for important items while the app is open, using existing data already loaded in the UI (e.g., due work inbox items and incomplete tasks).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/reminders/useReminders.ts",
+          "frontend/src/components/reminders/RemindersListener.tsx",
+          "frontend/src/components/AppShell.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/reminders/useReminders.ts",
+          "frontend/src/components/reminders/RemindersListener.tsx",
+          "frontend/src/components/AppShell.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "build-template/README.md",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/index.html",
+    "frontend/public/assets/generated/pwa-icon.dim_192x192.png",
+    "frontend/public/assets/generated/pwa-icon.dim_512x512.png",
+    "frontend/public/manifest.webmanifest",
+    "frontend/public/offline.html",
+    "frontend/public/sw.js",
+    "frontend/src/components/AppShell.tsx",
+    "frontend/src/components/pwa/InstallBanner.tsx",
+    "frontend/src/components/reminders/RemindersListener.tsx",
+    "frontend/src/components/settings/NotificationsSection.tsx",
+    "frontend/src/lib/fa.ts",
+    "frontend/src/notifications/useNotifications.ts",
+    "frontend/src/pages/SettingsPage.tsx",
+    "frontend/src/pwa/registerServiceWorker.ts",
+    "frontend/src/pwa/usePwaInstallPrompt.ts",
+    "frontend/src/reminders/useReminders.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

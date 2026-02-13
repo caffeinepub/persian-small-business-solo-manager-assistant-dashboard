@@ -1,0 +1,111 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-make-the-web-app-installable-on-mobile-pwa-add-to-home-screen-by-adding-a-web-app-manifest-app-icons-and-required-html-metadata",
+      "featureTitle": "Make the web app installable on mobile (PWA / Add to Home Screen) by adding a web app manifest, app icons, and required HTML metadata.",
+      "files": [
+        "frontend/index.html",
+        "frontend/public/manifest.webmanifest"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-service-worker-registration-and-a-minimal-service-worker-so-the-installed-app-has-an-app-shell-offline-experience-at-minimum-caches-the-main-html-css-js-bundle-and-shows-a-basic-offline-fallback",
+      "featureTitle": "Add service worker registration and a minimal service worker so the installed app has an app-shell offline experience (at minimum: caches the main HTML/CSS/JS bundle and shows a basic offline fallback).",
+      "files": [
+        "frontend/public/offline.html",
+        "frontend/public/sw.js",
+        "frontend/src/pwa/registerServiceWorker.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-an-in-app-install-ux-detect-when-the-app-is-installable-beforeinstallprompt-and-show-a-dismissible-banner-button-that-triggers-the-installation-prompt-plus-a-state-indicating-when-the-app-is-already-installed",
+      "featureTitle": "Add an in-app install UX: detect when the app is installable (beforeinstallprompt) and show a dismissible banner/button that triggers the installation prompt, plus a state indicating when the app is already installed.",
+      "files": [
+        "frontend/src/components/AppShell.tsx",
+        "frontend/src/components/pwa/InstallBanner.tsx",
+        "frontend/src/lib/fa.ts",
+        "frontend/src/pwa/usePwaInstallPrompt.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-local-device-notification-support-using-the-web-notifications-api-provide-a-settings-section-to-request-permission-show-current-permission-status-and-send-a-test-notification",
+      "featureTitle": "Add local (device) notification support using the Web Notifications API: provide a Settings section to request permission, show current permission status, and send a test notification.",
+      "files": [
+        "frontend/src/components/settings/NotificationsSection.tsx",
+        "frontend/src/lib/fa.ts",
+        "frontend/src/notifications/useNotifications.ts",
+        "frontend/src/pages/SettingsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-15"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-trigger-user-visible-reminders-inside-the-app-and-optionally-as-system-notifications-when-permission-is-granted-for-important-items-while-the-app-is-open-using-existing-data-already-loaded-in-the-ui-e-g-due-work-inbox-items-and-incomplete-tasks",
+      "featureTitle": "Trigger user-visible reminders inside the app (and optionally as system notifications when permission is granted) for important items while the app is open, using existing data already loaded in the UI (e.g., due work inbox items and incomplete tasks).",
+      "files": [
+        "frontend/src/components/AppShell.tsx",
+        "frontend/src/components/reminders/RemindersListener.tsx",
+        "frontend/src/reminders/useReminders.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-16"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

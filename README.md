@@ -1,2 +1,3 @@
-# persian-small-business-solo-manager-assistant-dashboard
-Exported from Caffeine project: Persian small-business solo manager assistant dashboard
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

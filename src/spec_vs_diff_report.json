@@ -1,0 +1,46 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-10T06:46:31.072Z",
+  "summary": "Most PWA/installability, service worker + offline fallback, in-app install UX, Web Notifications settings, and in-app/system reminder logic appear implemented. One potential gap is the required PWA icon image files themselves (not shown in the text diff).",
+  "missing_requirements": [
+    {
+      "id": "REQ-12",
+      "requirement": "Provide at least 192x192 and 512x512 PWA app icon image files referenced by the manifest (pwa-icon.dim_192x192.png and pwa-icon.dim_512x512.png).",
+      "reason": "The manifest and HTML reference icon paths under /assets/generated/, but the diff summary does not show the actual image files being added. Since the diff is limited to LLM-readable files, the required PNG assets cannot be confirmed as present.",
+      "evidence": [
+        "frontend/public/manifest.webmanifest",
+        "frontend/index.html",
+        "frontend/public/sw.js"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Added a 'راهنمای اولیه' (onboarding revisit) card/link in Settings page.",
+      "reason": "The BuildRequest focuses on PWA installability, service worker offline shell, install UX, notifications, and reminders; adding an onboarding revisit entry in Settings is not requested by REQ-12..REQ-16.",
+      "evidence": [
+        "frontend/src/pages/SettingsPage.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.72,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/index.html",
+    "frontend/public/manifest.webmanifest",
+    "frontend/public/offline.html",
+    "frontend/public/sw.js",
+    "frontend/src/components/AppShell.tsx",
+    "frontend/src/components/pwa/InstallBanner.tsx",
+    "frontend/src/components/reminders/RemindersListener.tsx",
+    "frontend/src/components/settings/NotificationsSection.tsx",
+    "frontend/src/lib/fa.ts",
+    "frontend/src/notifications/useNotifications.ts",
+    "frontend/src/pages/SettingsPage.tsx",
+    "frontend/src/pwa/registerServiceWorker.ts",
+    "frontend/src/pwa/usePwaInstallPrompt.ts",
+    "frontend/src/reminders/useReminders.ts",
+    "project_state.json"
+  ]
+}
