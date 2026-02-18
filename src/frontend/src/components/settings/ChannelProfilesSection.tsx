@@ -32,6 +32,12 @@ export default function ChannelProfilesSection() {
     setEditingProfile(undefined);
   };
 
+  const getChannelTypeLabel = (channelType: string): string => {
+    const key = channelType as keyof typeof fa;
+    const value = fa[key];
+    return typeof value === 'string' ? value : channelType;
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -65,7 +71,7 @@ export default function ChannelProfilesSection() {
                   <TableCell className="font-medium">{profile.name}</TableCell>
                   <TableCell>
                     <Badge variant="outline">
-                      {fa[profile.channelType as keyof typeof fa] || profile.channelType}
+                      {getChannelTypeLabel(profile.channelType)}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">{profile.urlOrHandle}</TableCell>

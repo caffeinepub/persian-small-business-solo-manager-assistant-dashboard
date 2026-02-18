@@ -46,6 +46,12 @@ export default function ImportExportSection() {
     try {
       const text = await importFile.text();
       const data: ExportData = JSON.parse(text);
+      
+      // Import file metadata if present
+      if (data.fileMetadata && data.fileMetadata.length > 0) {
+        toast.info(`در حال وارد کردن ${data.fileMetadata.length} فایل...`);
+      }
+      
       await importData.mutateAsync(data);
       toast.success(fa.importSuccess);
       setShowImportConfirm(false);

@@ -11,10 +11,28 @@ export interface ExportData {
     tasks: Array<Task>;
     channels: Array<ChannelProfile>;
     workItems: Array<WorkInboxItem>;
+    fileMetadata: Array<FileMetadata>;
     notes: Array<Note>;
     contentPlans: Array<ContentPlan>;
 }
 export type Time = bigint;
+export interface FileMetadata {
+    id: string;
+    contentType: string;
+    owner: Principal;
+    size: bigint;
+    tags: Array<string>;
+    fileName: string;
+    notes?: string;
+    uploadedAt: Time;
+}
+export interface Task {
+    id: string;
+    title: string;
+    completed: boolean;
+    dueDate?: Time;
+    priority: bigint;
+}
 export interface ContentPlan {
     id: string;
     status: Variant_published_planned_draft;
@@ -29,13 +47,6 @@ export interface ChannelProfile {
     name: string;
     urlOrHandle: string;
     notes?: string;
-}
-export interface Task {
-    id: string;
-    title: string;
-    completed: boolean;
-    dueDate?: Time;
-    priority: bigint;
 }
 export interface WorkInboxItem {
     id: string;
@@ -92,8 +103,10 @@ export interface backendInterface {
     addTask(task: Task): Promise<void>;
     addWorkInboxItem(item: WorkInboxItem): Promise<void>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    createFileMetadata(metadata: FileMetadata): Promise<void>;
     deleteChannelProfile(profileId: string): Promise<void>;
     deleteContentPlan(planId: string): Promise<void>;
+    deleteFileMetadata(id: string): Promise<void>;
     deleteNote(noteId: string): Promise<void>;
     deleteTask(taskId: string): Promise<void>;
     deleteWorkInboxItem(itemId: string): Promise<void>;
@@ -102,6 +115,7 @@ export interface backendInterface {
     getCallerUserRole(): Promise<UserRole>;
     getChannelProfiles(): Promise<Array<ChannelProfile>>;
     getContentPlans(): Promise<Array<ContentPlan>>;
+    getFileMetadata(id: string): Promise<FileMetadata | null>;
     getNotes(): Promise<Array<Note>>;
     getTasks(): Promise<Array<Task>>;
     getTodayTasks(): Promise<Array<Task>>;
@@ -109,9 +123,11 @@ export interface backendInterface {
     getWorkInboxItems(): Promise<Array<WorkInboxItem>>;
     importUserData(data: ExportData): Promise<void>;
     isCallerAdmin(): Promise<boolean>;
+    listFileMetadata(): Promise<Array<FileMetadata>>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     updateChannelProfile(updatedProfile: ChannelProfile): Promise<void>;
     updateContentPlan(updatedPlan: ContentPlan): Promise<void>;
+    updateFileMetadata(id: string, metadata: FileMetadata): Promise<void>;
     updateNote(updatedNote: Note): Promise<void>;
     updateTask(updatedTask: Task): Promise<void>;
     updateWorkInboxItem(updatedItem: WorkInboxItem): Promise<void>;

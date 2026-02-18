@@ -40,8 +40,19 @@ export interface ExportData {
   'tasks' : Array<Task>,
   'channels' : Array<ChannelProfile>,
   'workItems' : Array<WorkInboxItem>,
+  'fileMetadata' : Array<FileMetadata>,
   'notes' : Array<Note>,
   'contentPlans' : Array<ContentPlan>,
+}
+export interface FileMetadata {
+  'id' : string,
+  'contentType' : string,
+  'owner' : Principal,
+  'size' : bigint,
+  'tags' : Array<string>,
+  'fileName' : string,
+  'notes' : [] | [string],
+  'uploadedAt' : Time,
 }
 export interface Note {
   'id' : string,
@@ -77,7 +88,33 @@ export interface WorkInboxItem {
 export type WorkItemStatus = { 'new' : null } |
   { 'completed' : null } |
   { 'inProgress' : null };
+export interface _CaffeineStorageCreateCertificateResult {
+  'method' : string,
+  'blob_hash' : string,
+}
+export interface _CaffeineStorageRefillInformation {
+  'proposed_top_up_amount' : [] | [bigint],
+}
+export interface _CaffeineStorageRefillResult {
+  'success' : [] | [boolean],
+  'topped_up_amount' : [] | [bigint],
+}
 export interface _SERVICE {
+  '_caffeineStorageBlobIsLive' : ActorMethod<[Uint8Array], boolean>,
+  '_caffeineStorageBlobsToDelete' : ActorMethod<[], Array<Uint8Array>>,
+  '_caffeineStorageConfirmBlobDeletion' : ActorMethod<
+    [Array<Uint8Array>],
+    undefined
+  >,
+  '_caffeineStorageCreateCertificate' : ActorMethod<
+    [string],
+    _CaffeineStorageCreateCertificateResult
+  >,
+  '_caffeineStorageRefillCashier' : ActorMethod<
+    [[] | [_CaffeineStorageRefillInformation]],
+    _CaffeineStorageRefillResult
+  >,
+  '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'addChannelProfile' : ActorMethod<[ChannelProfile], undefined>,
   'addContentPlan' : ActorMethod<[ContentPlan], undefined>,
@@ -85,8 +122,10 @@ export interface _SERVICE {
   'addTask' : ActorMethod<[Task], undefined>,
   'addWorkInboxItem' : ActorMethod<[WorkInboxItem], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'createFileMetadata' : ActorMethod<[FileMetadata], undefined>,
   'deleteChannelProfile' : ActorMethod<[string], undefined>,
   'deleteContentPlan' : ActorMethod<[string], undefined>,
+  'deleteFileMetadata' : ActorMethod<[string], undefined>,
   'deleteNote' : ActorMethod<[string], undefined>,
   'deleteTask' : ActorMethod<[string], undefined>,
   'deleteWorkInboxItem' : ActorMethod<[string], undefined>,
@@ -95,6 +134,7 @@ export interface _SERVICE {
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getChannelProfiles' : ActorMethod<[], Array<ChannelProfile>>,
   'getContentPlans' : ActorMethod<[], Array<ContentPlan>>,
+  'getFileMetadata' : ActorMethod<[string], [] | [FileMetadata]>,
   'getNotes' : ActorMethod<[], Array<Note>>,
   'getTasks' : ActorMethod<[], Array<Task>>,
   'getTodayTasks' : ActorMethod<[], Array<Task>>,
@@ -102,9 +142,11 @@ export interface _SERVICE {
   'getWorkInboxItems' : ActorMethod<[], Array<WorkInboxItem>>,
   'importUserData' : ActorMethod<[ExportData], undefined>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
+  'listFileMetadata' : ActorMethod<[], Array<FileMetadata>>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'updateChannelProfile' : ActorMethod<[ChannelProfile], undefined>,
   'updateContentPlan' : ActorMethod<[ContentPlan], undefined>,
+  'updateFileMetadata' : ActorMethod<[string, FileMetadata], undefined>,
   'updateNote' : ActorMethod<[Note], undefined>,
   'updateTask' : ActorMethod<[Task], undefined>,
   'updateWorkInboxItem' : ActorMethod<[WorkInboxItem], undefined>,

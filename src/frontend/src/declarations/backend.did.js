@@ -8,6 +8,17 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
+export const _CaffeineStorageCreateCertificateResult = IDL.Record({
+  'method' : IDL.Text,
+  'blob_hash' : IDL.Text,
+});
+export const _CaffeineStorageRefillInformation = IDL.Record({
+  'proposed_top_up_amount' : IDL.Opt(IDL.Nat),
+});
+export const _CaffeineStorageRefillResult = IDL.Record({
+  'success' : IDL.Opt(IDL.Bool),
+  'topped_up_amount' : IDL.Opt(IDL.Nat),
+});
 export const ChannelType = IDL.Variant({
   'instagram' : IDL.Null,
   'whatsapp' : IDL.Null,
@@ -73,10 +84,21 @@ export const UserRole = IDL.Variant({
   'user' : IDL.Null,
   'guest' : IDL.Null,
 });
+export const FileMetadata = IDL.Record({
+  'id' : IDL.Text,
+  'contentType' : IDL.Text,
+  'owner' : IDL.Principal,
+  'size' : IDL.Nat,
+  'tags' : IDL.Vec(IDL.Text),
+  'fileName' : IDL.Text,
+  'notes' : IDL.Opt(IDL.Text),
+  'uploadedAt' : Time,
+});
 export const ExportData = IDL.Record({
   'tasks' : IDL.Vec(Task),
   'channels' : IDL.Vec(ChannelProfile),
   'workItems' : IDL.Vec(WorkInboxItem),
+  'fileMetadata' : IDL.Vec(FileMetadata),
   'notes' : IDL.Vec(Note),
   'contentPlans' : IDL.Vec(ContentPlan),
 });
@@ -87,6 +109,32 @@ export const UserProfile = IDL.Record({
 });
 
 export const idlService = IDL.Service({
+  '_caffeineStorageBlobIsLive' : IDL.Func(
+      [IDL.Vec(IDL.Nat8)],
+      [IDL.Bool],
+      ['query'],
+    ),
+  '_caffeineStorageBlobsToDelete' : IDL.Func(
+      [],
+      [IDL.Vec(IDL.Vec(IDL.Nat8))],
+      ['query'],
+    ),
+  '_caffeineStorageConfirmBlobDeletion' : IDL.Func(
+      [IDL.Vec(IDL.Vec(IDL.Nat8))],
+      [],
+      [],
+    ),
+  '_caffeineStorageCreateCertificate' : IDL.Func(
+      [IDL.Text],
+      [_CaffeineStorageCreateCertificateResult],
+      [],
+    ),
+  '_caffeineStorageRefillCashier' : IDL.Func(
+      [IDL.Opt(_CaffeineStorageRefillInformation)],
+      [_CaffeineStorageRefillResult],
+      [],
+    ),
+  '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
   'addChannelProfile' : IDL.Func([ChannelProfile], [], []),
   'addContentPlan' : IDL.Func([ContentPlan], [], []),
@@ -94,8 +142,10 @@ export const idlService = IDL.Service({
   'addTask' : IDL.Func([Task], [], []),
   'addWorkInboxItem' : IDL.Func([WorkInboxItem], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'createFileMetadata' : IDL.Func([FileMetadata], [], []),
   'deleteChannelProfile' : IDL.Func([IDL.Text], [], []),
   'deleteContentPlan' : IDL.Func([IDL.Text], [], []),
+  'deleteFileMetadata' : IDL.Func([IDL.Text], [], []),
   'deleteNote' : IDL.Func([IDL.Text], [], []),
   'deleteTask' : IDL.Func([IDL.Text], [], []),
   'deleteWorkInboxItem' : IDL.Func([IDL.Text], [], []),
@@ -104,6 +154,7 @@ export const idlService = IDL.Service({
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getChannelProfiles' : IDL.Func([], [IDL.Vec(ChannelProfile)], ['query']),
   'getContentPlans' : IDL.Func([], [IDL.Vec(ContentPlan)], ['query']),
+  'getFileMetadata' : IDL.Func([IDL.Text], [IDL.Opt(FileMetadata)], ['query']),
   'getNotes' : IDL.Func([], [IDL.Vec(Note)], ['query']),
   'getTasks' : IDL.Func([], [IDL.Vec(Task)], ['query']),
   'getTodayTasks' : IDL.Func([], [IDL.Vec(Task)], ['query']),
@@ -115,9 +166,11 @@ export const idlService = IDL.Service({
   'getWorkInboxItems' : IDL.Func([], [IDL.Vec(WorkInboxItem)], ['query']),
   'importUserData' : IDL.Func([ExportData], [], []),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'listFileMetadata' : IDL.Func([], [IDL.Vec(FileMetadata)], ['query']),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'updateChannelProfile' : IDL.Func([ChannelProfile], [], []),
   'updateContentPlan' : IDL.Func([ContentPlan], [], []),
+  'updateFileMetadata' : IDL.Func([IDL.Text, FileMetadata], [], []),
   'updateNote' : IDL.Func([Note], [], []),
   'updateTask' : IDL.Func([Task], [], []),
   'updateWorkInboxItem' : IDL.Func([WorkInboxItem], [], []),
@@ -126,6 +179,17 @@ export const idlService = IDL.Service({
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
+  const _CaffeineStorageCreateCertificateResult = IDL.Record({
+    'method' : IDL.Text,
+    'blob_hash' : IDL.Text,
+  });
+  const _CaffeineStorageRefillInformation = IDL.Record({
+    'proposed_top_up_amount' : IDL.Opt(IDL.Nat),
+  });
+  const _CaffeineStorageRefillResult = IDL.Record({
+    'success' : IDL.Opt(IDL.Bool),
+    'topped_up_amount' : IDL.Opt(IDL.Nat),
+  });
   const ChannelType = IDL.Variant({
     'instagram' : IDL.Null,
     'whatsapp' : IDL.Null,
@@ -191,10 +255,21 @@ export const idlFactory = ({ IDL }) => {
     'user' : IDL.Null,
     'guest' : IDL.Null,
   });
+  const FileMetadata = IDL.Record({
+    'id' : IDL.Text,
+    'contentType' : IDL.Text,
+    'owner' : IDL.Principal,
+    'size' : IDL.Nat,
+    'tags' : IDL.Vec(IDL.Text),
+    'fileName' : IDL.Text,
+    'notes' : IDL.Opt(IDL.Text),
+    'uploadedAt' : Time,
+  });
   const ExportData = IDL.Record({
     'tasks' : IDL.Vec(Task),
     'channels' : IDL.Vec(ChannelProfile),
     'workItems' : IDL.Vec(WorkInboxItem),
+    'fileMetadata' : IDL.Vec(FileMetadata),
     'notes' : IDL.Vec(Note),
     'contentPlans' : IDL.Vec(ContentPlan),
   });
@@ -205,6 +280,32 @@ export const idlFactory = ({ IDL }) => {
   });
   
   return IDL.Service({
+    '_caffeineStorageBlobIsLive' : IDL.Func(
+        [IDL.Vec(IDL.Nat8)],
+        [IDL.Bool],
+        ['query'],
+      ),
+    '_caffeineStorageBlobsToDelete' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Vec(IDL.Nat8))],
+        ['query'],
+      ),
+    '_caffeineStorageConfirmBlobDeletion' : IDL.Func(
+        [IDL.Vec(IDL.Vec(IDL.Nat8))],
+        [],
+        [],
+      ),
+    '_caffeineStorageCreateCertificate' : IDL.Func(
+        [IDL.Text],
+        [_CaffeineStorageCreateCertificateResult],
+        [],
+      ),
+    '_caffeineStorageRefillCashier' : IDL.Func(
+        [IDL.Opt(_CaffeineStorageRefillInformation)],
+        [_CaffeineStorageRefillResult],
+        [],
+      ),
+    '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
     'addChannelProfile' : IDL.Func([ChannelProfile], [], []),
     'addContentPlan' : IDL.Func([ContentPlan], [], []),
@@ -212,8 +313,10 @@ export const idlFactory = ({ IDL }) => {
     'addTask' : IDL.Func([Task], [], []),
     'addWorkInboxItem' : IDL.Func([WorkInboxItem], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'createFileMetadata' : IDL.Func([FileMetadata], [], []),
     'deleteChannelProfile' : IDL.Func([IDL.Text], [], []),
     'deleteContentPlan' : IDL.Func([IDL.Text], [], []),
+    'deleteFileMetadata' : IDL.Func([IDL.Text], [], []),
     'deleteNote' : IDL.Func([IDL.Text], [], []),
     'deleteTask' : IDL.Func([IDL.Text], [], []),
     'deleteWorkInboxItem' : IDL.Func([IDL.Text], [], []),
@@ -222,6 +325,11 @@ export const idlFactory = ({ IDL }) => {
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getChannelProfiles' : IDL.Func([], [IDL.Vec(ChannelProfile)], ['query']),
     'getContentPlans' : IDL.Func([], [IDL.Vec(ContentPlan)], ['query']),
+    'getFileMetadata' : IDL.Func(
+        [IDL.Text],
+        [IDL.Opt(FileMetadata)],
+        ['query'],
+      ),
     'getNotes' : IDL.Func([], [IDL.Vec(Note)], ['query']),
     'getTasks' : IDL.Func([], [IDL.Vec(Task)], ['query']),
     'getTodayTasks' : IDL.Func([], [IDL.Vec(Task)], ['query']),
@@ -233,9 +341,11 @@ export const idlFactory = ({ IDL }) => {
     'getWorkInboxItems' : IDL.Func([], [IDL.Vec(WorkInboxItem)], ['query']),
     'importUserData' : IDL.Func([ExportData], [], []),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'listFileMetadata' : IDL.Func([], [IDL.Vec(FileMetadata)], ['query']),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'updateChannelProfile' : IDL.Func([ChannelProfile], [], []),
     'updateContentPlan' : IDL.Func([ContentPlan], [], []),
+    'updateFileMetadata' : IDL.Func([IDL.Text, FileMetadata], [], []),
     'updateNote' : IDL.Func([Note], [], []),
     'updateTask' : IDL.Func([Task], [], []),
     'updateWorkInboxItem' : IDL.Func([WorkInboxItem], [], []),

@@ -56,6 +56,18 @@ export default function PlannerPage() {
     return <Badge variant={variants[status]}>{labels[status]}</Badge>;
   };
 
+  const getChannelLabel = (channel: string): string => {
+    const key = channel as keyof typeof fa;
+    const value = fa[key];
+    return typeof value === 'string' ? value : channel;
+  };
+
+  const getContentTypeLabel = (contentType: string): string => {
+    const key = contentType as keyof typeof fa;
+    const value = fa[key];
+    return typeof value === 'string' ? value : contentType;
+  };
+
   if (isLoading) {
     return <div className="text-center py-12">در حال بارگذاری...</div>;
   }
@@ -111,11 +123,11 @@ export default function PlannerPage() {
                         <p className="font-medium">{plan.title}</p>
                         <div className="flex items-center gap-2 mt-2">
                           <Badge variant="outline">
-                            {fa[plan.channel as keyof typeof fa] || plan.channel}
+                            {getChannelLabel(plan.channel)}
                           </Badge>
                           {getStatusBadge(plan.status)}
                           <Badge variant="secondary">
-                            {fa[plan.contentType as keyof typeof fa] || plan.contentType}
+                            {getContentTypeLabel(plan.contentType)}
                           </Badge>
                         </div>
                       </div>
@@ -143,7 +155,7 @@ export default function PlannerPage() {
               <Card key={channel}>
                 <CardHeader>
                   <CardTitle>
-                    {fa[channel as keyof typeof fa] || channel} ({plans.length})
+                    {getChannelLabel(channel)} ({plans.length})
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -155,7 +167,7 @@ export default function PlannerPage() {
                           <div className="flex items-center gap-2 mt-2">
                             {getStatusBadge(plan.status)}
                             <Badge variant="secondary">
-                              {fa[plan.contentType as keyof typeof fa] || plan.contentType}
+                              {getContentTypeLabel(plan.contentType)}
                             </Badge>
                           </div>
                         </div>

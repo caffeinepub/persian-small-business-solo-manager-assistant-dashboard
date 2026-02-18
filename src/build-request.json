@@ -1,127 +1,250 @@
 {
   "kind": "build_request",
-  "title": "Add installable PWA support and local notifications",
+  "title": "Add file storage module for managing content",
+  "projectName": "Manager Yar",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-12",
-      "text": "Make the web app installable on mobile (PWA / Add to Home Screen) by adding a web app manifest, app icons, and required HTML metadata.",
-      "target": "frontend",
+      "id": "REQ-17",
+      "text": "Add a backend data model for file metadata records including id, owner (Principal), filename, contentType, size (bytes), uploadedAt (timestamp), and optional notes/tags fields, stored per-user like other entities",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-12"
         ],
         "quotes": [
-          "اعلان نوتیفیکیشن و قابلیت نصب در گوشی را هم اضافه کن"
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
         ]
       },
       "acceptanceCriteria": [
-        "The app includes a valid web app manifest (webmanifest) with name, short_name, start_url, display=standalone, theme_color, background_color, and icons.",
-        "frontend/index.html links the manifest and includes appropriate meta tags for PWA installation.",
-        "The app provides at least 192x192 and 512x512 app icons referenced by the manifest.",
-        "On supported browsers (e.g., Chrome Android), the app is eligible for Add to Home Screen and launches in standalone mode after installation."
+        "Backend defines a FileMetadata type with all specified fields",
+        "File metadata is stored per Principal using a stable HashMap or similar structure",
+        "Only the owner can read, update, or delete their own file metadata records"
       ]
     },
     {
-      "id": "REQ-13",
-      "text": "Add service worker registration and a minimal service worker so the installed app has an app-shell offline experience (at minimum: caches the main HTML/CSS/JS bundle and shows a basic offline fallback).",
-      "target": "frontend",
+      "id": "REQ-18",
+      "text": "Add backend methods to create, list, get, update, and delete file metadata records, with authorization checks ensuring users can only access their own files",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-12"
         ],
         "quotes": [
-          "اعلان نوتیفیکیشن و قابلیت نصب در گوشی را هم اضافه کن"
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
         ]
       },
       "acceptanceCriteria": [
-        "A service worker is registered from editable application code (do not modify immutable paths).",
-        "When the app is installed, reopening it while offline shows either cached app shell or an explicit offline fallback page/message.",
-        "Service worker updates are handled safely (new SW activates without breaking navigation; users are not stuck on an old cached version indefinitely)."
+        "Backend exposes createFileMetadata, listFileMetadata, getFileMetadata, updateFileMetadata, and deleteFileMetadata methods",
+        "All methods verify the caller's Principal matches the file owner",
+        "Methods return appropriate errors for unauthorized access or missing records"
       ]
     },
     {
-      "id": "REQ-14",
-      "text": "Add an in-app install UX: detect when the app is installable (beforeinstallprompt) and show a dismissible banner/button that triggers the installation prompt, plus a state indicating when the app is already installed.",
-      "target": "frontend",
+      "id": "REQ-19",
+      "text": "Add backend storage for file binary content using stable data structures (e.g., stable HashMap mapping file ID to Blob), and provide upload/download methods that enforce per-user authorization",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-12"
         ],
         "quotes": [
-          "اعلان نوتیفیکیشن و قابلیت نصب در گوشی را هم اضافه کن"
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
         ]
       },
       "acceptanceCriteria": [
-        "When the browser fires beforeinstallprompt, the UI shows an install call-to-action.",
-        "Clicking the install call-to-action triggers the native install prompt.",
-        "After installation (or when running in standalone), the install call-to-action is hidden or replaced with an 'Installed' indicator.",
-        "The install UI can be dismissed and does not reappear immediately in the same session after dismissal."
+        "Backend stores file content as Blob indexed by file ID",
+        "Upload method accepts file content, creates metadata, stores content, and returns the new file ID",
+        "Download method returns file content only if the caller is the owner",
+        "File content is persisted across canister upgrades"
       ]
     },
     {
-      "id": "REQ-15",
-      "text": "Add local (device) notification support using the Web Notifications API: provide a Settings section to request permission, show current permission status, and send a test notification.",
+      "id": "REQ-20",
+      "text": "Add React Query hooks (useFileMetadataList, useCreateFileMutation, useUpdateFileMutation, useDeleteFileMutation) in frontend/src/hooks/useQueries.ts following existing patterns for other entities",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-12"
         ],
         "quotes": [
-          "اعلان نوتیفیکیشن و قابلیت نصب در گوشی را هم اضافه کن"
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
         ]
       },
       "acceptanceCriteria": [
-        "Settings page includes a Notifications section with: permission status, a button to request permission, and a button to send a test notification.",
-        "If permission is denied, the UI clearly indicates that notifications are blocked and the test notification action is disabled or explains why it cannot run.",
-        "If permission is granted, clicking test sends a visible system notification with a sensible title and body.",
-        "No notification permission prompt is shown automatically on page load; it is only triggered by an explicit user action."
+        "useFileMetadataList fetches and caches the user's file metadata list",
+        "Mutation hooks invalidate relevant queries on success",
+        "Hooks use the actor returned by useActor and follow the error-handling pattern of existing hooks"
       ]
     },
     {
-      "id": "REQ-16",
-      "text": "Trigger user-visible reminders inside the app (and optionally as system notifications when permission is granted) for important items while the app is open, using existing data already loaded in the UI (e.g., due work inbox items and incomplete tasks).",
+      "id": "REQ-21",
+      "text": "Create a new Files page (frontend/src/pages/FilesPage.tsx) displaying a table or card list of file metadata with columns for filename, type, size, upload date, and actions (view, download, edit metadata, delete)",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-12"
         ],
         "quotes": [
-          "اعلان نوتیفیکیشن و قابلیت نصب در گوشی را هم اضافه کن"
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
         ]
       },
       "acceptanceCriteria": [
-        "When the app is open and the user has granted notification permission, the app can emit a system notification for at least one meaningful event derived from existing state (e.g., detecting overdue items on load or after data refresh).",
-        "When permission is not granted, the same event is still surfaced as an in-app notification/toast (no silent failure).",
-        "Reminder behavior avoids spamming: the same reminder is not repeatedly shown on every render; it is deduplicated per session (or with a simple timestamp/seen tracking in localStorage)."
+        "Files page renders a searchable/filterable list of file metadata using useFileMetadataList",
+        "Each file row shows filename, content type, size (formatted), and upload timestamp",
+        "Action buttons trigger appropriate dialogs or download flows",
+        "Page uses Persian (fa) labels from frontend/src/lib/fa.ts"
+      ]
+    },
+    {
+      "id": "REQ-22",
+      "text": "Add a file upload dialog component (frontend/src/components/files/FileUploadDialog.tsx) with file input, drag-and-drop support, optional notes field, and progress indicator during upload",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-12"
+        ],
+        "quotes": [
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dialog allows selecting a file via input or drag-and-drop",
+        "Shows file preview (name, size, type) before upload",
+        "Displays upload progress or spinner during mutation",
+        "Closes and refreshes the file list on successful upload",
+        "Shows error toast on upload failure"
+      ]
+    },
+    {
+      "id": "REQ-23",
+      "text": "Implement file download functionality that fetches file content from the backend and triggers a browser download with the correct filename and content type",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-12"
+        ],
+        "quotes": [
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Download action calls backend download method and converts Blob to browser download",
+        "Downloaded file uses the original filename and MIME type",
+        "Shows loading indicator during download",
+        "Handles download errors with user-visible messages"
+      ]
+    },
+    {
+      "id": "REQ-24",
+      "text": "Add a file metadata edit dialog (frontend/src/components/files/FileMetadataEditDialog.tsx) allowing the user to update filename and notes without re-uploading the file content",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-12"
+        ],
+        "quotes": [
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dialog pre-fills current filename and notes",
+        "Saves changes via useUpdateFileMutation",
+        "Refreshes file list on success",
+        "Shows validation and error feedback"
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "text": "Add a 'Files' navigation item in the AppShell sidebar linking to the new Files page, using a file/folder icon and Persian label",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-12"
+        ],
+        "quotes": [
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Navigation item appears in the sidebar between existing items",
+        "Icon is a file or folder icon (e.g., lucide-react FileText or Folder)",
+        "Label uses Persian translation from fa.ts",
+        "Clicking navigates to /files route"
+      ]
+    },
+    {
+      "id": "REQ-26",
+      "text": "Update the Dashboard page to show a count of stored files using the file metadata list query, displayed in a card similar to existing inbox/tasks/notes cards",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-12"
+        ],
+        "quotes": [
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dashboard fetches file metadata count via useFileMetadataList",
+        "Displays count in a card with a file icon and Persian label",
+        "Card links to /files page when clicked",
+        "Follows styling of existing dashboard cards"
+      ]
+    },
+    {
+      "id": "REQ-27",
+      "text": "Include file metadata in the data export/import functionality (frontend/src/components/settings/ImportExportSection.tsx) so users can back up and restore their file records along with other data",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-12"
+        ],
+        "quotes": [
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Export JSON includes file metadata records under a 'files' key",
+        "Import process restores file metadata records if present in the JSON",
+        "File content (binary data) is not included in export/import (only metadata)",
+        "Shows appropriate success/error feedback during import"
+      ]
+    },
+    {
+      "id": "REQ-28",
+      "text": "Add Persian translations for all file-related UI text (labels, buttons, messages, placeholders) to frontend/src/lib/fa.ts following existing naming conventions",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-12"
+        ],
+        "quotes": [
+          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All new file UI strings have corresponding fa.ts entries",
+        "Translations are idiomatic Persian and consistent with existing app language",
+        "Keys follow the existing structure (e.g., files.upload, files.download)"
       ]
     }
   ],
   "constraints": [
-    "Do not modify files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or anything in frontend/src/components/ui.",
-    "Backend must remain a single Motoko actor (no additional backend services).",
-    "Do not add third-party push notification providers or external messaging services."
+    "Do not serve file binary content through HTTP endpoints; use canister query/update methods only",
+    "File storage must respect per-user authorization (Principal-based access control)",
+    "File content and metadata must be persisted across canister upgrades using stable storage",
+    "Do not modify immutable frontend paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui"
   ],
   "nonGoals": [
-    "Implementing true web push notifications (server-initiated push while the app is closed) is out of scope.",
-    "Implementing OS-level background scheduling on iOS/Android (beyond what standard PWA APIs allow) is out of scope.",
-    "Adding external channel integrations (Instagram/Telegram/WhatsApp) is out of scope."
+    "External file hosting or cloud storage integrations (e.g., AWS S3, Google Drive)",
+    "File sharing or public links (files are private to the owner)",
+    "Advanced file preview or editing (image viewer, PDF reader, video player)",
+    "File versioning or revision history",
+    "Batch file operations (multi-select delete, bulk upload)"
   ],
   "imageRequirements": {
-    "required": [
-      "Flat vector app icon on a transparent background (pwa-icon.dim_192x192.png)",
-      "Flat vector app icon on a transparent background (pwa-icon.dim_512x512.png)"
-    ],
+    "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

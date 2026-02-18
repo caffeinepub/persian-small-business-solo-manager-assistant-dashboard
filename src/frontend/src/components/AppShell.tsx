@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { fa } from '../lib/fa';
-import { LayoutDashboard, Inbox, CheckSquare, Calendar, StickyNote, Settings, User, LogOut, Menu } from 'lucide-react';
+import { LayoutDashboard, Inbox, CheckSquare, Calendar, StickyNote, FileText, Settings, User, LogOut, Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 import InstallBanner from './pwa/InstallBanner';
@@ -24,6 +24,7 @@ const navItems = [
   { path: '/tasks', label: fa.tasksToday, icon: CheckSquare },
   { path: '/planner', label: fa.planner, icon: Calendar },
   { path: '/notes', label: fa.notes, icon: StickyNote },
+  { path: '/files', label: fa.files.nav, icon: FileText },
   { path: '/settings', label: fa.settings, icon: Settings },
 ];
 

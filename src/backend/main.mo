@@ -1,18 +1,20 @@
 import Map "mo:core/Map";
 import Array "mo:core/Array";
 import Time "mo:core/Time";
-import Text "mo:core/Text";
-import Iter "mo:core/Iter";
 import Runtime "mo:core/Runtime";
 import Principal "mo:core/Principal";
 
 import AccessControl "authorization/access-control";
 import MixinAuthorization "authorization/MixinAuthorization";
+import Storage "blob-storage/Storage";
+import MixinStorage "blob-storage/Mixin";
 
 actor {
   // Authorization system state
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
+
+  include MixinStorage();
 
   // Types
   type ChannelType = { #website; #instagram; #telegram; #whatsapp; #phone };
@@ -67,12 +69,25 @@ actor {
     lastUpdated : ?Time.Time;
   };
 
+  // File specific types
+  public type FileMetadata = {
+    id : Text;
+    owner : Principal;
+    fileName : Text;
+    contentType : Text;
+    size : Nat;
+    uploadedAt : Time.Time;
+    notes : ?Text;
+    tags : [Text];
+  };
+
   public type ExportData = {
     workItems : [WorkInboxItem];
     tasks : [Task];
     contentPlans : [ContentPlan];
     channels : [ChannelProfile];
     notes : [Note];
+    fileMetadata : [FileMetadata];
   };
 
   // Persistent storage using core maps (one per user)
@@ -82,6 +97,108 @@ actor {
   let contentPlanStorage = Map.empty<Principal, [ContentPlan]>();
   let channelProfileStorage = Map.empty<Principal, [ChannelProfile]>();
   let noteStorage = Map.empty<Principal, [Note]>();
+
+  // Per-user FileMetadata storage
+  let fileMetadataStorage = Map.empty<Principal, Map.Map<Text, FileMetadata>>();
+
+  // Helper function to check permissions
+  func checkPermission(caller : Principal) {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can perform this action");
+    };
+  };
+
+  // File Metadata Management
+  public shared ({ caller }) func createFileMetadata(metadata : FileMetadata) : async () {
+    checkPermission(caller);
+
+    if (metadata.owner != caller) {
+      Runtime.trap("Unauthorized: Cannot create metadata for another user");
+    };
+
+    let userMetadata = switch (fileMetadataStorage.get(caller)) {
+      case (null) { Map.empty<Text, FileMetadata>() };
+      case (?existing) { existing };
+    };
+    userMetadata.add(metadata.id, metadata);
+    fileMetadataStorage.add(caller, userMetadata);
+  };
+
+  public query ({ caller }) func getFileMetadata(id : Text) : async ?FileMetadata {
+    checkPermission(caller);
+
+    switch (fileMetadataStorage.get(caller)) {
+      case (null) { null };
+      case (?userMetadata) {
+        switch (userMetadata.get(id)) {
+          case (null) { null };
+          case (?metadata) {
+            if (metadata.owner != caller) {
+              Runtime.trap("Unauthorized: Cannot access another user's metadata");
+            };
+            ?metadata;
+          };
+        };
+      };
+    };
+  };
+
+  public query ({ caller }) func listFileMetadata() : async [FileMetadata] {
+    checkPermission(caller);
+
+    switch (fileMetadataStorage.get(caller)) {
+      case (null) { [] };
+      case (?userMetadata) {
+        userMetadata.values().toArray();
+      };
+    };
+  };
+
+  public shared ({ caller }) func updateFileMetadata(id : Text, metadata : FileMetadata) : async () {
+    checkPermission(caller);
+
+    if (metadata.owner != caller) {
+      Runtime.trap("Unauthorized: Cannot update metadata for another user");
+    };
+
+    let userMetadata = switch (fileMetadataStorage.get(caller)) {
+      case (null) { Map.empty<Text, FileMetadata>() };
+      case (?existing) { existing };
+    };
+
+    switch (userMetadata.get(id)) {
+      case (null) { Runtime.trap("Metadata not found") };
+      case (?existingMetadata) {
+        if (existingMetadata.owner != caller) {
+          Runtime.trap("Unauthorized: Cannot update another user's metadata");
+        };
+      };
+    };
+
+    userMetadata.add(id, metadata);
+    fileMetadataStorage.add(caller, userMetadata);
+  };
+
+  public shared ({ caller }) func deleteFileMetadata(id : Text) : async () {
+    checkPermission(caller);
+
+    let userMetadata = switch (fileMetadataStorage.get(caller)) {
+      case (null) { Map.empty<Text, FileMetadata>() };
+      case (?existing) { existing };
+    };
+
+    switch (userMetadata.get(id)) {
+      case (null) { Runtime.trap("Metadata not found") };
+      case (?metadata) {
+        if (metadata.owner != caller) {
+          Runtime.trap("Unauthorized: Cannot delete another user's metadata");
+        };
+      };
+    };
+
+    userMetadata.remove(id);
+    fileMetadataStorage.add(caller, userMetadata);
+  };
 
   // User Profile Management
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
@@ -139,12 +256,18 @@ actor {
       case (?items) { items };
     };
 
+    let fileMetadata = switch (fileMetadataStorage.get(caller)) {
+      case (null) { Array.empty<FileMetadata>() };
+      case (?userMetadata) { userMetadata.values().toArray() };
+    };
+
     {
       workItems;
       tasks;
       contentPlans;
       channels;
       notes;
+      fileMetadata;
     };
   };
 
@@ -154,11 +277,23 @@ actor {
       Runtime.trap("Unauthorized: Only users can import data");
     };
 
+    for (metadata in data.fileMetadata.vals()) {
+      if (metadata.owner != caller) {
+        Runtime.trap("Unauthorized: Cannot import metadata belonging to other users");
+      };
+    };
+
     workInboxStorage.add(caller, data.workItems);
     taskStorage.add(caller, data.tasks);
     contentPlanStorage.add(caller, data.contentPlans);
     channelProfileStorage.add(caller, data.channels);
     noteStorage.add(caller, data.notes);
+
+    let userMetadata = Map.empty<Text, FileMetadata>();
+    for (metadata in data.fileMetadata.vals()) {
+      userMetadata.add(metadata.id, metadata);
+    };
+    fileMetadataStorage.add(caller, userMetadata);
   };
 
   // Work Inbox CRUD

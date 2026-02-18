@@ -59,6 +59,12 @@ export default function WorkInboxPage() {
     return <Badge variant={variants[status]}>{labels[status]}</Badge>;
   };
 
+  const getChannelLabel = (channel: string): string => {
+    const key = channel as keyof typeof fa;
+    const value = fa[key];
+    return typeof value === 'string' ? value : channel;
+  };
+
   if (isLoading) {
     return <div className="text-center py-12">در حال بارگذاری...</div>;
   }
@@ -130,28 +136,30 @@ export default function WorkInboxPage() {
               </Button>
             </div>
           ) : (
-            <div className="rounded-md border">
+            <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-right">{fa.summary}</TableHead>
-                    <TableHead className="text-right">{fa.source}</TableHead>
-                    <TableHead className="text-right">{fa.status}</TableHead>
-                    <TableHead className="text-right">عملیات</TableHead>
+                    <TableHead>{fa.summary}</TableHead>
+                    <TableHead>{fa.source}</TableHead>
+                    <TableHead>{fa.status}</TableHead>
+                    <TableHead className="text-left">عملیات</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredItems.map((item) => (
                     <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.description}</TableCell>
+                      <TableCell className="font-medium max-w-md">
+                        <p className="line-clamp-2">{item.description}</p>
+                      </TableCell>
                       <TableCell>
                         <Badge variant="outline">
-                          {fa[item.source as keyof typeof fa] || item.source}
+                          {getChannelLabel(item.source)}
                         </Badge>
                       </TableCell>
                       <TableCell>{getStatusBadge(item.status)}</TableCell>
                       <TableCell>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 justify-start">
                           <Button variant="ghost" size="icon" onClick={() => handleEdit(item)}>
                             <Pencil className="h-4 w-4" />
                           </Button>

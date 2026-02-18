@@ -1,158 +1,163 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add installable PWA support, offline app shell, and local notifications",
+  "title": "Add file storage module for managing content",
   "requirements": [
     {
-      "id": "REQ-12",
-      "summary": "Make the app installable (PWA) via manifest, icons, and required HTML metadata.",
+      "id": "REQ-20",
+      "summary": "Add React Query hooks for file metadata operations",
       "acceptanceCriteria": [
-        "The app includes a valid web app manifest (webmanifest) with name, short_name, start_url, display=standalone, theme_color, background_color, and icons.",
-        "frontend/index.html links the manifest and includes appropriate meta tags for PWA installation.",
-        "The app provides at least 192x192 and 512x512 app icons referenced by the manifest.",
-        "On supported browsers (e.g., Chrome Android), the app is eligible for Add to Home Screen and launches in standalone mode after installation."
+        "useFileMetadataList fetches and caches the user's file metadata list",
+        "Mutation hooks invalidate relevant queries on success",
+        "Hooks use the actor returned by useActor and follow the error-handling pattern of existing hooks"
       ],
       "file_operations": [
         {
-          "path": "frontend/public/manifest.webmanifest",
-          "operation": "create",
-          "description": "Add a valid web app manifest with name/short_name, start_url, display=standalone, theme_color, background_color, and icons referencing frontend/public/assets/generated/pwa-icon.dim_192x192.png and frontend/public/assets/generated/pwa-icon.dim_512x512.png."
-        },
-        {
-          "path": "frontend/index.html",
+          "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Link the web app manifest and add PWA-related metadata (including theme color and install-related tags) required for installability."
-        },
-        {
-          "path": "frontend/public/assets/generated/pwa-icon.dim_192x192.png",
-          "operation": "create",
-          "description": "Add the generated PWA app icon asset (192x192) at this exact path and ensure it matches the manifest reference."
-        },
-        {
-          "path": "frontend/public/assets/generated/pwa-icon.dim_512x512.png",
-          "operation": "create",
-          "description": "Add the generated PWA app icon asset (512x512) at this exact path and ensure it matches the manifest reference."
+          "description": "Add useFileMetadataList query hook to fetch file metadata using actor.listFileMetadata(). Add useCreateFileMutation, useUpdateFileMutation, and useDeleteFileMutation hooks that call actor.createFileMetadata, actor.updateFileMetadata, and actor.deleteFileMetadata respectively. Each mutation hook should invalidate the 'fileMetadata' query key on success. Follow the existing patterns for error handling, toast notifications, and query invalidation used by other entity hooks in this file."
         }
       ]
     },
     {
-      "id": "REQ-13",
-      "summary": "Register a service worker and provide minimal offline app-shell caching with an offline fallback.",
+      "id": "REQ-21",
+      "summary": "Create Files page displaying file metadata list with actions and wire into router",
       "acceptanceCriteria": [
-        "A service worker is registered from editable application code (do not modify immutable paths).",
-        "When the app is installed, reopening it while offline shows either cached app shell or an explicit offline fallback page/message.",
-        "Service worker updates are handled safely (new SW activates without breaking navigation; users are not stuck on an old cached version indefinitely)."
+        "Files page renders a searchable/filterable list of file metadata using useFileMetadataList",
+        "Each file row shows filename, content type, size (formatted), and upload timestamp",
+        "Action buttons trigger appropriate dialogs or download flows",
+        "Page uses Persian (fa) labels from frontend/src/lib/fa.ts",
+        "FilesPage is accessible via /files route and protected by AuthGate"
       ],
       "file_operations": [
         {
-          "path": "frontend/public/sw.js",
+          "path": "frontend/src/pages/FilesPage.tsx",
           "operation": "create",
-          "description": "Add a minimal service worker that caches the app shell (main HTML/CSS/JS and key static assets) and serves a basic offline fallback for navigations when offline."
-        },
-        {
-          "path": "frontend/public/offline.html",
-          "operation": "create",
-          "description": "Add a simple offline fallback page/message that the service worker can return for navigation requests when the cache cannot satisfy the request."
-        },
-        {
-          "path": "frontend/src/pwa/registerServiceWorker.ts",
-          "operation": "create",
-          "description": "Implement service worker registration from editable application code, including safe update handling (detect new SW, prompt/auto-reload strategy, and avoid indefinite staleness)."
+          "description": "Create a new FilesPage component that uses useFileMetadataList hook to fetch and display file metadata. Render a table or card list showing filename, contentType, size (formatted in KB/MB), and uploadedAt timestamp. Include a search input to filter files by filename. Add action buttons for each file: view/download (using REQ-23), edit metadata (opening FileMetadataEditDialog from REQ-24), and delete (with confirmation). Include a floating action button or header button to open the FileUploadDialog from REQ-22. Use Persian labels from fa.ts throughout. Follow the layout and styling patterns of WorkInboxPage.tsx and NotesPage.tsx."
         },
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Wire service worker registration into the app startup (without modifying frontend/src/main.tsx) by calling the registration utility from a top-level component effect."
+          "description": "Import FilesPage from './pages/FilesPage'. Add a new route for '/files' path that renders FilesPage wrapped in AuthGate. Position it in the Routes alongside existing page routes (DashboardPage, WorkInboxPage, TasksTodayPage, PlannerPage, NotesPage, SettingsPage, OnboardingWizardPage). Ensure the route is protected by authentication checks."
         }
       ]
     },
     {
-      "id": "REQ-14",
-      "summary": "Add a dismissible in-app install prompt UX using beforeinstallprompt and standalone detection.",
+      "id": "REQ-22",
+      "summary": "Add file upload dialog with drag-and-drop support",
       "acceptanceCriteria": [
-        "When the browser fires beforeinstallprompt, the UI shows an install call-to-action.",
-        "Clicking the install call-to-action triggers the native install prompt.",
-        "After installation (or when running in standalone), the install call-to-action is hidden or replaced with an 'Installed' indicator.",
-        "The install UI can be dismissed and does not reappear immediately in the same session after dismissal."
+        "Dialog allows selecting a file via input or drag-and-drop",
+        "Shows file preview (name, size, type) before upload",
+        "Displays upload progress or spinner during mutation",
+        "Closes and refreshes the file list on successful upload",
+        "Shows error toast on upload failure"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pwa/usePwaInstallPrompt.ts",
+          "path": "frontend/src/components/files/FileUploadDialog.tsx",
           "operation": "create",
-          "description": "Create a hook that listens for beforeinstallprompt, exposes an install trigger, detects standalone/installed state, and tracks per-session dismissal to avoid immediate reappearance."
-        },
+          "description": "Create FileUploadDialog component accepting open/onOpenChange props. Implement a file input with drag-and-drop support (use onDragOver, onDrop events). Display selected file preview showing name, size, and type before upload. Include an optional notes/tags textarea. On submit, read the file as Uint8Array, construct a FileMetadata object (generate id, set owner to current principal, capture file properties, set uploadedAt to current timestamp), then call useCreateFileMutation with the metadata. Use ExternalBlob.fromBytes for the file content and call actor.createFileMetadata. Show a progress spinner during upload. On success, close dialog and show success toast. On error, display error toast. Use Persian labels from fa.ts. Follow the dialog pattern of NoteFormDialog.tsx and TaskFormDialog.tsx. Verify the blob-storage component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-23",
+      "summary": "Implement file download functionality",
+      "acceptanceCriteria": [
+        "Download action calls backend download method and converts Blob to browser download",
+        "Downloaded file uses the original filename and MIME type",
+        "Shows loading indicator during download",
+        "Handles download errors with user-visible messages"
+      ],
+      "file_operations": [
         {
-          "path": "frontend/src/components/pwa/InstallBanner.tsx",
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add a useDownloadFileMutation hook that accepts a file ID and FileMetadata. The mutation function should call a backend method to retrieve the file content (if one exists, otherwise use ExternalBlob methods to fetch bytes), create a Blob with the correct contentType, generate a download URL using URL.createObjectURL, create a temporary anchor element, set its href to the blob URL and download attribute to the fileName, trigger a click, then revoke the object URL. Show a loading toast during download and success/error toasts afterward. Use the actor from useActor. Verify the blob-storage component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-24",
+      "summary": "Add file metadata edit dialog",
+      "acceptanceCriteria": [
+        "Dialog pre-fills current filename and notes",
+        "Saves changes via useUpdateFileMutation",
+        "Refreshes file list on success",
+        "Shows validation and error feedback"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/files/FileMetadataEditDialog.tsx",
           "operation": "create",
-          "description": "Add a small, dismissible install banner/button component that uses the PWA install hook to show CTA, trigger prompt, and display an Installed indicator when appropriate."
-        },
+          "description": "Create FileMetadataEditDialog component accepting open, onOpenChange, and fileMetadata props. Pre-fill a form with fileName and notes fields from the provided fileMetadata. On submit, call useUpdateFileMutation with the file id and updated metadata object. Close dialog on success and show success toast. Display validation errors for empty fileName. Use Persian labels from fa.ts. Follow the form dialog pattern of ChannelProfileFormDialog.tsx."
+        }
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "summary": "Add Files navigation item to AppShell sidebar",
+      "acceptanceCriteria": [
+        "Navigation item appears in the sidebar between existing items",
+        "Icon is a file or folder icon (e.g., lucide-react FileText or Folder)",
+        "Label uses Persian translation from fa.ts",
+        "Clicking navigates to /files route"
+      ],
+      "file_operations": [
         {
           "path": "frontend/src/components/AppShell.tsx",
           "operation": "modify",
-          "description": "Render the install banner in a visible, non-intrusive place within the existing layout (e.g., near header/main content) so it is available across pages without introducing a new route."
-        },
-        {
-          "path": "frontend/src/lib/fa.ts",
-          "operation": "modify",
-          "description": "Add localized Farsi strings for the install CTA, Installed indicator, and dismiss action."
+          "description": "Add a new navigation item for Files in the sidebar navigation array. Use FileText or Folder icon from lucide-react. Set the link to '/files' and use the Persian label from fa.ts (add 'files' key if needed). Position it between existing nav items (e.g., after Notes or before Settings). Follow the existing nav item structure."
         }
       ]
     },
     {
-      "id": "REQ-15",
-      "summary": "Add Settings UI for Web Notifications permission, status display, and test notification.",
+      "id": "REQ-26",
+      "summary": "Update Dashboard to show file count card",
       "acceptanceCriteria": [
-        "Settings page includes a Notifications section with: permission status, a button to request permission, and a button to send a test notification.",
-        "If permission is denied, the UI clearly indicates that notifications are blocked and the test notification action is disabled or explains why it cannot run.",
-        "If permission is granted, clicking test sends a visible system notification with a sensible title and body.",
-        "No notification permission prompt is shown automatically on page load; it is only triggered by an explicit user action."
+        "Dashboard fetches file metadata count via useFileMetadataList",
+        "Displays count in a card with a file icon and Persian label",
+        "Card links to /files page when clicked",
+        "Follows styling of existing dashboard cards"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/notifications/useNotifications.ts",
-          "operation": "create",
-          "description": "Create a hook wrapping the Web Notifications API to read permission status, request permission only on explicit user action, and send a test notification when allowed."
-        },
-        {
-          "path": "frontend/src/components/settings/NotificationsSection.tsx",
-          "operation": "create",
-          "description": "Add a Settings section UI that shows notification permission status, a request-permission button, and a test-notification button with clear disabled/blocked states."
-        },
-        {
-          "path": "frontend/src/pages/SettingsPage.tsx",
+          "path": "frontend/src/pages/DashboardPage.tsx",
           "operation": "modify",
-          "description": "Wire the Notifications section into the existing Settings page (no new top-level pages/routes)."
-        },
-        {
-          "path": "frontend/src/lib/fa.ts",
-          "operation": "modify",
-          "description": "Add localized Farsi strings for notification permission states, request permission action, and test notification labels/messages."
+          "description": "Import and use useFileMetadataList hook to fetch file metadata. Add a new dashboard card displaying the count of files (fileMetadata.length). Use a FileText or Folder icon from lucide-react. Apply Persian label from fa.ts. Make the card clickable and navigate to '/files' on click. Position the card in the grid alongside existing cards for inbox, tasks, content plans, and notes. Follow the styling and structure of existing dashboard cards."
         }
       ]
     },
     {
-      "id": "REQ-16",
-      "summary": "Show deduplicated in-app reminders (and optional system notifications) for meaningful events derived from existing loaded tasks/work items while app is open.",
+      "id": "REQ-27",
+      "summary": "Include file metadata in data export/import functionality",
       "acceptanceCriteria": [
-        "When the app is open and the user has granted notification permission, the app can emit a system notification for at least one meaningful event derived from existing state (e.g., detecting overdue items on load or after data refresh).",
-        "When permission is not granted, the same event is still surfaced as an in-app notification/toast (no silent failure).",
-        "Reminder behavior avoids spamming: the same reminder is not repeatedly shown on every render; it is deduplicated per session (or with a simple timestamp/seen tracking in localStorage)."
+        "Export JSON includes file metadata records under a 'files' key",
+        "Import process restores file metadata records if present in the JSON",
+        "File content (binary data) is not included in export/import (only metadata)",
+        "Shows appropriate success/error feedback during import"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/reminders/useReminders.ts",
-          "operation": "create",
-          "description": "Implement reminder detection using existing React Query state (e.g., overdue tasks via dueDate and new/overdue work inbox items), deduplicate reminders per session or via localStorage, and emit either an in-app toast or system notification when permission is granted."
-        },
-        {
-          "path": "frontend/src/components/reminders/RemindersListener.tsx",
-          "operation": "create",
-          "description": "Create a non-visual component that subscribes to existing data hooks (tasks and work inbox items) and triggers reminders through the reminders hook."
-        },
-        {
-          "path": "frontend/src/components/AppShell.tsx",
+          "path": "frontend/src/components/settings/ImportExportSection.tsx",
           "operation": "modify",
-          "description": "Wire the RemindersListener into the app shell so reminders can run while the user navigates the app (without modifying restricted files and without creating orphan components)."
+          "description": "Update the export functionality to include fileMetadata from useFileMetadataList in the exported JSON under a 'fileMetadata' key (matching the ExportData structure from backend.d.ts). Update the import functionality to check for fileMetadata in the imported JSON and call useCreateFileMutation for each file metadata record (without binary content). Show progress feedback during import and success/error toasts. Ensure the exported JSON structure matches the ExportData type from backend interface (fileMetadata field already exists)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-28",
+      "summary": "Add Persian translations for file-related UI text",
+      "acceptanceCriteria": [
+        "All new file UI strings have corresponding fa.ts entries",
+        "Translations are idiomatic Persian and consistent with existing app language",
+        "Keys follow the existing structure (e.g., files.upload, files.download)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/lib/fa.ts",
+          "operation": "modify",
+          "description": "Add a new 'files' section to the fa translation object with keys for all file-related UI text: navigation label ('files'), page title, upload button, download action, edit action, delete action, file name label, content type label, size label, upload date label, notes/tags label, upload dialog title, upload success/error messages, download success/error messages, edit dialog title, delete confirmation message, and any other labels needed by FilesPage, FileUploadDialog, and FileMetadataEditDialog. Use idiomatic Persian translations consistent with existing app terminology. Follow the nested structure pattern used for other sections (e.g., workInbox, tasks, notes)."
         }
       ]
     }

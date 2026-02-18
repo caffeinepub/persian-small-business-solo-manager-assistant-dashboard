@@ -1,121 +1,165 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-10T06:46:31.076Z",
+  "generatedAt": "2026-02-18T23:34:29.936Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 5,
-    "implemented": 5,
+    "total": 12,
+    "implemented": 9,
     "items": [
       {
-        "id": "REQ-12",
-        "summary": "Make the web app installable on mobile (PWA / Add to Home Screen) by adding a web app manifest, app icons, and required HTML metadata.",
+        "id": "REQ-17",
+        "summary": "Add a backend data model for file metadata records including id, owner (Principal), filename, contentType, size (bytes), uploadedAt (timestamp), and optional notes/tags fields, stored per-user like other entities",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-18",
+        "summary": "Add backend methods to create, list, get, update, and delete file metadata records, with authorization checks ensuring users can only access their own files",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-19",
+        "summary": "Add backend storage for file binary content using stable data structures (e.g., stable HashMap mapping file ID to Blob), and provide upload/download methods that enforce per-user authorization",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-20",
+        "summary": "Add React Query hooks (useFileMetadataList, useCreateFileMutation, useUpdateFileMutation, useDeleteFileMutation) in frontend/src/hooks/useQueries.ts following existing patterns for other entities",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/public/manifest.webmanifest",
-          "frontend/index.html",
-          "frontend/public/assets/generated/pwa-icon.dim_192x192.png",
-          "frontend/public/assets/generated/pwa-icon.dim_512x512.png"
+          "frontend/src/hooks/useQueries.ts"
         ],
         "matchedFiles": [
-          "frontend/public/manifest.webmanifest",
-          "frontend/index.html",
-          "frontend/public/assets/generated/pwa-icon.dim_192x192.png",
-          "frontend/public/assets/generated/pwa-icon.dim_512x512.png"
+          "frontend/src/hooks/useQueries.ts"
         ]
       },
       {
-        "id": "REQ-13",
-        "summary": "Add service worker registration and a minimal service worker so the installed app has an app-shell offline experience (at minimum: caches the main HTML/CSS/JS bundle and shows a basic offline fallback).",
+        "id": "REQ-21",
+        "summary": "Create a new Files page (frontend/src/pages/FilesPage.tsx) displaying a table or card list of file metadata with columns for filename, type, size, upload date, and actions (view, download, edit metadata, delete)",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/public/sw.js",
-          "frontend/public/offline.html",
-          "frontend/src/pwa/registerServiceWorker.ts",
+          "frontend/src/pages/FilesPage.tsx",
           "frontend/src/App.tsx"
         ],
         "matchedFiles": [
-          "frontend/public/sw.js",
-          "frontend/public/offline.html",
-          "frontend/src/pwa/registerServiceWorker.ts"
+          "frontend/src/pages/FilesPage.tsx",
+          "frontend/src/App.tsx"
         ]
       },
       {
-        "id": "REQ-14",
-        "summary": "Add an in-app install UX: detect when the app is installable (beforeinstallprompt) and show a dismissible banner/button that triggers the installation prompt, plus a state indicating when the app is already installed.",
+        "id": "REQ-22",
+        "summary": "Add a file upload dialog component (frontend/src/components/files/FileUploadDialog.tsx) with file input, drag-and-drop support, optional notes field, and progress indicator during upload",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pwa/usePwaInstallPrompt.ts",
-          "frontend/src/components/pwa/InstallBanner.tsx",
-          "frontend/src/components/AppShell.tsx",
-          "frontend/src/lib/fa.ts"
+          "frontend/src/components/files/FileUploadDialog.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pwa/usePwaInstallPrompt.ts",
-          "frontend/src/components/pwa/InstallBanner.tsx",
-          "frontend/src/components/AppShell.tsx",
-          "frontend/src/lib/fa.ts"
+          "frontend/src/components/files/FileUploadDialog.tsx"
         ]
       },
       {
-        "id": "REQ-15",
-        "summary": "Add local (device) notification support using the Web Notifications API: provide a Settings section to request permission, show current permission status, and send a test notification.",
+        "id": "REQ-23",
+        "summary": "Implement file download functionality that fetches file content from the backend and triggers a browser download with the correct filename and content type",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/notifications/useNotifications.ts",
-          "frontend/src/components/settings/NotificationsSection.tsx",
-          "frontend/src/pages/SettingsPage.tsx",
-          "frontend/src/lib/fa.ts"
+          "frontend/src/hooks/useQueries.ts"
         ],
         "matchedFiles": [
-          "frontend/src/notifications/useNotifications.ts",
-          "frontend/src/components/settings/NotificationsSection.tsx",
-          "frontend/src/pages/SettingsPage.tsx",
-          "frontend/src/lib/fa.ts"
+          "frontend/src/hooks/useQueries.ts"
         ]
       },
       {
-        "id": "REQ-16",
-        "summary": "Trigger user-visible reminders inside the app (and optionally as system notifications when permission is granted) for important items while the app is open, using existing data already loaded in the UI (e.g., due work inbox items and incomplete tasks).",
+        "id": "REQ-24",
+        "summary": "Add a file metadata edit dialog (frontend/src/components/files/FileMetadataEditDialog.tsx) allowing the user to update filename and notes without re-uploading the file content",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/reminders/useReminders.ts",
-          "frontend/src/components/reminders/RemindersListener.tsx",
+          "frontend/src/components/files/FileMetadataEditDialog.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/files/FileMetadataEditDialog.tsx"
+        ]
+      },
+      {
+        "id": "REQ-25",
+        "summary": "Add a 'Files' navigation item in the AppShell sidebar linking to the new Files page, using a file/folder icon and Persian label",
+        "status": "implemented",
+        "plannedFiles": [
           "frontend/src/components/AppShell.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/reminders/useReminders.ts",
-          "frontend/src/components/reminders/RemindersListener.tsx",
           "frontend/src/components/AppShell.tsx"
+        ]
+      },
+      {
+        "id": "REQ-26",
+        "summary": "Update the Dashboard page to show a count of stored files using the file metadata list query, displayed in a card similar to existing inbox/tasks/notes cards",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/DashboardPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/DashboardPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-27",
+        "summary": "Include file metadata in the data export/import functionality (frontend/src/components/settings/ImportExportSection.tsx) so users can back up and restore their file records along with other data",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/settings/ImportExportSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/settings/ImportExportSection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-28",
+        "summary": "Add Persian translations for all file-related UI text (labels, buttons, messages, placeholders) to frontend/src/lib/fa.ts following existing naming conventions",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/lib/fa.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/lib/fa.ts"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/blob-storage/Mixin.mo",
+    "backend/blob-storage/Storage.mo",
+    "backend/main.mo",
     "build-request.json",
-    "build-template/README.md",
+    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/index.html",
-    "frontend/public/assets/generated/pwa-icon.dim_192x192.png",
-    "frontend/public/assets/generated/pwa-icon.dim_512x512.png",
-    "frontend/public/manifest.webmanifest",
-    "frontend/public/offline.html",
-    "frontend/public/sw.js",
+    "frontend/src/App.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
     "frontend/src/components/AppShell.tsx",
-    "frontend/src/components/pwa/InstallBanner.tsx",
-    "frontend/src/components/reminders/RemindersListener.tsx",
-    "frontend/src/components/settings/NotificationsSection.tsx",
+    "frontend/src/components/files/FileMetadataEditDialog.tsx",
+    "frontend/src/components/files/FileUploadDialog.tsx",
+    "frontend/src/components/settings/ChannelProfilesSection.tsx",
+    "frontend/src/components/settings/ImportExportSection.tsx",
+    "frontend/src/config.ts",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useQueries.ts",
     "frontend/src/lib/fa.ts",
-    "frontend/src/notifications/useNotifications.ts",
-    "frontend/src/pages/SettingsPage.tsx",
-    "frontend/src/pwa/registerServiceWorker.ts",
-    "frontend/src/pwa/usePwaInstallPrompt.ts",
-    "frontend/src/reminders/useReminders.ts",
+    "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/FilesPage.tsx",
+    "frontend/src/pages/PlannerPage.tsx",
+    "frontend/src/pages/WorkInboxPage.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

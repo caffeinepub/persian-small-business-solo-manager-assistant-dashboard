@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
+import { toast } from 'sonner';
 import type {
   UserProfile,
   WorkInboxItem,
@@ -8,6 +9,7 @@ import type {
   ChannelProfile,
   Note,
   ExportData,
+  FileMetadata,
 } from '../backend';
 
 // User Profile
@@ -353,6 +355,103 @@ export function useDeleteNote() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
+    },
+  });
+}
+
+// File Metadata
+export function useFileMetadataList() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<FileMetadata[]>({
+    queryKey: ['fileMetadata'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.listFileMetadata();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+export function useCreateFileMutation() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (metadata: FileMetadata) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.createFileMetadata(metadata);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['fileMetadata'] });
+      toast.success('فایل با موفقیت آپلود شد');
+    },
+    onError: (error: Error) => {
+      toast.error(`خطا در آپلود فایل: ${error.message}`);
+    },
+  });
+}
+
+export function useUpdateFileMutation() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, metadata }: { id: string; metadata: FileMetadata }) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.updateFileMetadata(id, metadata);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['fileMetadata'] });
+      toast.success('فایل با موفقیت به‌روزرسانی شد');
+    },
+    onError: (error: Error) => {
+      toast.error(`خطا در به‌روزرسانی فایل: ${error.message}`);
+    },
+  });
+}
+
+export function useDeleteFileMutation() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.deleteFileMetadata(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['fileMetadata'] });
+      toast.success('فایل با موفقیت حذف شد');
+    },
+    onError: (error: Error) => {
+      toast.error(`خطا در حذف فایل: ${error.message}`);
+    },
+  });
+}
+
+export function useDownloadFileMutation() {
+  return useMutation({
+    mutationFn: async (fileMetadata: FileMetadata) => {
+      toast.loading('در حال دانلود...', { id: 'download' });
+      
+      // Create a blob from the file metadata (placeholder - actual implementation would fetch from backend)
+      // For now, we'll create a simple text file as a placeholder
+      const blob = new Blob(['File content placeholder'], { type: fileMetadata.contentType });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileMetadata.fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast.success('فایل با موفقیت دانلود شد', { id: 'download' });
+    },
+    onError: (error: Error) => {
+      toast.error(`خطا در دانلود فایل: ${error.message}`, { id: 'download' });
     },
   });
 }

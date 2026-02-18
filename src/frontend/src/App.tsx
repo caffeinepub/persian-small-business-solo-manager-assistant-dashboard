@@ -9,6 +9,7 @@ import WorkInboxPage from './pages/WorkInboxPage';
 import TasksTodayPage from './pages/TasksTodayPage';
 import PlannerPage from './pages/PlannerPage';
 import NotesPage from './pages/NotesPage';
+import FilesPage from './pages/FilesPage';
 import SettingsPage from './pages/SettingsPage';
 import OnboardingWizardPage from './pages/OnboardingWizardPage';
 
@@ -52,6 +53,12 @@ const notesRoute = createRoute({
   component: NotesPage,
 });
 
+const filesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/files',
+  component: FilesPage,
+});
+
 const settingsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/settings',
@@ -70,6 +77,7 @@ const routeTree = rootRoute.addChildren([
   tasksRoute,
   plannerRoute,
   notesRoute,
+  filesRoute,
   settingsRoute,
   onboardingRoute,
 ]);
