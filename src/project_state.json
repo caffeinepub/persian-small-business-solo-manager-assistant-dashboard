@@ -1,208 +1,42 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 7,
-  "summary": "ساخت یک ابزار/دستیار مدیریتی به زبان فارسی برای کمک عملی و کارآمد به مدیر یک کسب‌وکار کوچک (با وب‌سایت و چندین کانال ارتباطی) که به‌تنهایی کسب‌وکار را مدیریت می‌کند.",
-  "architectural_notes": [],
+  "projectStateVersion": 3,
+  "summary": "3D animation project with dynamic, calming rotating background",
+  "architectural_notes": [
+    "3D graphics with dynamic camera/object rotation"
+  ],
   "known_issues": [],
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-create-a-persian-language-fa-web-app-that-acts-as-an-all-in-one-assistant-dashboard-for-a-solo-manager-of-a-small-business-with-a-website-and-multiple-communication-channels",
-      "title": "Create a Persian-language (fa) web app that acts as an all-in-one assistant dashboard for a solo manager of a small business with a website and multiple communication channels.",
+      "id": "feature-replace-the-current-animated-gradient-background-with-a-three-js-3d-scene-that-continuously-rotates-and-changes-camera-angles-to-create-a-calming-unique-visual-effect",
+      "title": "Replace the current animated gradient background with a Three.js 3D scene that continuously rotates and changes camera angles to create a calming, unique visual effect",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-implement-internet-identity-login-and-session-handling-so-the-app-is-private-per-user-each-principal-sees-only-their-own-data",
-      "title": "Implement Internet Identity login and session handling so the app is private per user (each principal sees only their own data).",
+      "id": "feature-implement-the-3d-scene-using-react-three-fiber-with-an-abstract-geometric-shape-that-serves-as-the-focal-point-for-the-rotating-camera",
+      "title": "Implement the 3D scene using React Three Fiber with an abstract geometric shape that serves as the focal point for the rotating camera",
       "reqIds": [
         "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-add-a-unified-work-inbox-module-where-the-user-can-manually-log-and-manage-incoming-items-from-multiple-channels-e-g-website-form-instagram-telegram-whatsapp-phone-without-requiring-external-integrations",
-      "title": "Add a unified 'Work Inbox' module where the user can manually log and manage incoming items from multiple channels (e.g., website form, Instagram, Telegram, WhatsApp, phone) without requiring external integrations.",
+      "id": "feature-configure-camera-animation-to-rotate-continuously-with-varying-speeds-and-angles-to-create-a-unique-mesmerizing-effect-that-never-repeats-exactly",
+      "title": "Configure camera animation to rotate continuously with varying speeds and angles to create a unique, mesmerizing effect that never repeats exactly",
       "reqIds": [
         "REQ-3"
       ],
       "version": 1
     },
     {
-      "id": "feature-add-a-tasks-module-for-daily-operations-with-task-lists-due-dates-priority-and-a-simple-today-view-optimized-for-a-solo-operator",
-      "title": "Add a Tasks module for daily operations with task lists, due dates, priority, and a simple 'Today' view optimized for a solo operator.",
+      "id": "feature-ensure-the-3d-background-maintains-visual-harmony-with-the-existing-oklch-color-system-and-adapts-to-light-dark-theme-changes",
+      "title": "Ensure the 3D background maintains visual harmony with the existing OKLCH color system and adapts to light/dark theme changes",
       "reqIds": [
         "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-content-posting-planner-module-for-planning-content-across-multiple-channels-with-a-calendar-like-list-view-no-external-posting-integrations",
-      "title": "Add a Content/Posting Planner module for planning content across multiple channels with a calendar-like list view (no external posting integrations).",
-      "reqIds": [
-        "REQ-5"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-website-channels-settings-module-to-track-the-user-s-properties-website-s-and-channel-profiles-as-structured-records-name-type-url-handle-notes-used-throughout-the-app-for-selection-lists",
-      "title": "Add a 'Website & Channels' settings module to track the user’s properties (website(s) and channel profiles) as structured records (name, type, URL/handle, notes), used throughout the app for selection lists.",
-      "reqIds": [
-        "REQ-6"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-lightweight-notes-playbook-module-for-storing-reusable-snippets-and-checklists-e-g-standard-replies-procedures-optimized-for-quick-copy-paste",
-      "title": "Add a lightweight Notes/Playbook module for storing reusable snippets and checklists (e.g., standard replies, procedures), optimized for quick copy/paste.",
-      "reqIds": [
-        "REQ-7"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-provide-an-onboarding-flow-first-run-wizard-in-persian-that-helps-the-user-set-up-their-website-channels-and-start-with-a-few-example-templates-tasks-and-notes-that-can-be-removed",
-      "title": "Provide an onboarding flow (first-run wizard) in Persian that helps the user set up their website/channels and start with a few example templates (tasks and notes) that can be removed.",
-      "reqIds": [
-        "REQ-8"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-a-coherent-visual-theme-non-blue-non-purple-suitable-for-a-professional-persian-business-assistant-including-rtl-layout-support-typography-spacing-and-consistent-component-styling-across-all-screens",
-      "title": "Create a coherent visual theme (non-blue/non-purple) suitable for a professional Persian business assistant, including RTL layout support, typography, spacing, and consistent component styling across all screens.",
-      "reqIds": [
-        "REQ-9"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-basic-data-export-import-to-help-a-solo-manager-back-up-and-move-their-data-json-export-and-json-import-for-their-own-records",
-      "title": "Add basic data export/import to help a solo manager back up and move their data (JSON export and JSON import) for their own records.",
-      "reqIds": [
-        "REQ-10"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-generate-and-include-required-static-images-as-app-assets-and-render-them-in-the-ui-e-g-sign-in-onboarding-and-empty-states-from-frontend-public-assets-generated-do-not-serve-images-via-the-backend",
-      "title": "Generate and include required static images as app assets, and render them in the UI (e.g., sign-in/onboarding and empty states) from frontend/public/assets/generated (do not serve images via the backend).",
-      "reqIds": [
-        "REQ-11"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-make-the-web-app-installable-on-mobile-pwa-add-to-home-screen-by-adding-a-web-app-manifest-app-icons-and-required-html-metadata",
-      "title": "Make the web app installable on mobile (PWA / Add to Home Screen) by adding a web app manifest, app icons, and required HTML metadata.",
-      "reqIds": [
-        "REQ-12"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-service-worker-registration-and-a-minimal-service-worker-so-the-installed-app-has-an-app-shell-offline-experience-at-minimum-caches-the-main-html-css-js-bundle-and-shows-a-basic-offline-fallback",
-      "title": "Add service worker registration and a minimal service worker so the installed app has an app-shell offline experience (at minimum: caches the main HTML/CSS/JS bundle and shows a basic offline fallback).",
-      "reqIds": [
-        "REQ-13"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-an-in-app-install-ux-detect-when-the-app-is-installable-beforeinstallprompt-and-show-a-dismissible-banner-button-that-triggers-the-installation-prompt-plus-a-state-indicating-when-the-app-is-already-installed",
-      "title": "Add an in-app install UX: detect when the app is installable (beforeinstallprompt) and show a dismissible banner/button that triggers the installation prompt, plus a state indicating when the app is already installed.",
-      "reqIds": [
-        "REQ-14"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-local-device-notification-support-using-the-web-notifications-api-provide-a-settings-section-to-request-permission-show-current-permission-status-and-send-a-test-notification",
-      "title": "Add local (device) notification support using the Web Notifications API: provide a Settings section to request permission, show current permission status, and send a test notification.",
-      "reqIds": [
-        "REQ-15"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-trigger-user-visible-reminders-inside-the-app-and-optionally-as-system-notifications-when-permission-is-granted-for-important-items-while-the-app-is-open-using-existing-data-already-loaded-in-the-ui-e-g-due-work-inbox-items-and-incomplete-tasks",
-      "title": "Trigger user-visible reminders inside the app (and optionally as system notifications when permission is granted) for important items while the app is open, using existing data already loaded in the UI (e.g., due work inbox items and incomplete tasks).",
-      "reqIds": [
-        "REQ-16"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-react-query-hooks-usefilemetadatalist-usecreatefilemutation-useupdatefilemutation-usedeletefilemutation-in-frontend-src-hooks-usequeries-ts-following-existing-patterns-for-other-entities",
-      "title": "Add React Query hooks (useFileMetadataList, useCreateFileMutation, useUpdateFileMutation, useDeleteFileMutation) in frontend/src/hooks/useQueries.ts following existing patterns for other entities",
-      "reqIds": [
-        "REQ-20"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-a-new-files-page-frontend-src-pages-filespage-tsx-displaying-a-table-or-card-list-of-file-metadata-with-columns-for-filename-type-size-upload-date-and-actions-view-download-edit-metadata-delete",
-      "title": "Create a new Files page (frontend/src/pages/FilesPage.tsx) displaying a table or card list of file metadata with columns for filename, type, size, upload date, and actions (view, download, edit metadata, delete)",
-      "reqIds": [
-        "REQ-21"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-file-upload-dialog-component-frontend-src-components-files-fileuploaddialog-tsx-with-file-input-drag-and-drop-support-optional-notes-field-and-progress-indicator-during-upload",
-      "title": "Add a file upload dialog component (frontend/src/components/files/FileUploadDialog.tsx) with file input, drag-and-drop support, optional notes field, and progress indicator during upload",
-      "reqIds": [
-        "REQ-22"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-implement-file-download-functionality-that-fetches-file-content-from-the-backend-and-triggers-a-browser-download-with-the-correct-filename-and-content-type",
-      "title": "Implement file download functionality that fetches file content from the backend and triggers a browser download with the correct filename and content type",
-      "reqIds": [
-        "REQ-23"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-file-metadata-edit-dialog-frontend-src-components-files-filemetadataeditdialog-tsx-allowing-the-user-to-update-filename-and-notes-without-re-uploading-the-file-content",
-      "title": "Add a file metadata edit dialog (frontend/src/components/files/FileMetadataEditDialog.tsx) allowing the user to update filename and notes without re-uploading the file content",
-      "reqIds": [
-        "REQ-24"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-files-navigation-item-in-the-appshell-sidebar-linking-to-the-new-files-page-using-a-file-folder-icon-and-persian-label",
-      "title": "Add a 'Files' navigation item in the AppShell sidebar linking to the new Files page, using a file/folder icon and Persian label",
-      "reqIds": [
-        "REQ-25"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-update-the-dashboard-page-to-show-a-count-of-stored-files-using-the-file-metadata-list-query-displayed-in-a-card-similar-to-existing-inbox-tasks-notes-cards",
-      "title": "Update the Dashboard page to show a count of stored files using the file metadata list query, displayed in a card similar to existing inbox/tasks/notes cards",
-      "reqIds": [
-        "REQ-26"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-include-file-metadata-in-the-data-export-import-functionality-frontend-src-components-settings-importexportsection-tsx-so-users-can-back-up-and-restore-their-file-records-along-with-other-data",
-      "title": "Include file metadata in the data export/import functionality (frontend/src/components/settings/ImportExportSection.tsx) so users can back up and restore their file records along with other data",
-      "reqIds": [
-        "REQ-27"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-persian-translations-for-all-file-related-ui-text-labels-buttons-messages-placeholders-to-frontend-src-lib-fa-ts-following-existing-naming-conventions",
-      "title": "Add Persian translations for all file-related UI text (labels, buttons, messages, placeholders) to frontend/src/lib/fa.ts following existing naming conventions",
-      "reqIds": [
-        "REQ-28"
       ],
       "version": 1
     }
@@ -210,55 +44,13 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "طراحی و ساخت یک دستیار/داشبورد فارسی برای مدیریت یکپارچه کارهای روزانه کسب‌وکار کوچک (وب‌سایت + کانال‌های متعدد) برای یک مدیر تنها",
+      "summary": "Add 3D rotating background image with continuously changing angles for calming, unique effect",
       "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-2",
-      "summary": "اضافه‌کردن اعلان‌ها (Notifications) برای آیتم‌ها/کارها و رویدادهای مهم داخل اپ",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "قابلیت نصب روی گوشی (PWA/Add to Home Screen) برای استفاده شبیه اپ موبایل",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-4",
-      "summary": "اضافه‌کردن بخش فضای فایل‌ها (File Storage) برای ذخیره و مدیریت محتوا (متن، عکس، ویدیو، فایل)",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-5",
-      "summary": "Add a backend data model for file metadata records including id, owner (Principal), filename, contentType, size (bytes), uploadedAt (timestamp), and optional notes/tags fields, stored per-user like other entities",
-      "reqIds": [
-        "REQ-17"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-6",
-      "summary": "Add backend methods to create, list, get, update, and delete file metadata records, with authorization checks ensuring users can only access their own files",
-      "reqIds": [
-        "REQ-18"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-7",
-      "summary": "Add backend storage for file binary content using stable data structures (e.g., stable HashMap mapping file ID to Blob), and provide upload/download methods that enforce per-user authorization",
-      "reqIds": [
-        "REQ-19"
-      ],
       "status": "pending"
     }
   ],
-  "gameProjectType": "none",
-  "projectName": "Persian small-business solo manager assistant dashboard",
+  "gameProjectType": "3d",
+  "projectName": "Business Dashboard",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

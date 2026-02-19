@@ -1,247 +1,91 @@
 {
   "kind": "build_request",
-  "title": "Add file storage module for managing content",
-  "projectName": "Manager Yar",
+  "title": "Add 3D rotating background with continuously changing camera angles",
+  "projectName": "Business Dashboard",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-17",
-      "text": "Add a backend data model for file metadata records including id, owner (Principal), filename, contentType, size (bytes), uploadedAt (timestamp), and optional notes/tags fields, stored per-user like other entities",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-12"
-        ],
-        "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Backend defines a FileMetadata type with all specified fields",
-        "File metadata is stored per Principal using a stable HashMap or similar structure",
-        "Only the owner can read, update, or delete their own file metadata records"
-      ]
-    },
-    {
-      "id": "REQ-18",
-      "text": "Add backend methods to create, list, get, update, and delete file metadata records, with authorization checks ensuring users can only access their own files",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-12"
-        ],
-        "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Backend exposes createFileMetadata, listFileMetadata, getFileMetadata, updateFileMetadata, and deleteFileMetadata methods",
-        "All methods verify the caller's Principal matches the file owner",
-        "Methods return appropriate errors for unauthorized access or missing records"
-      ]
-    },
-    {
-      "id": "REQ-19",
-      "text": "Add backend storage for file binary content using stable data structures (e.g., stable HashMap mapping file ID to Blob), and provide upload/download methods that enforce per-user authorization",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-12"
-        ],
-        "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Backend stores file content as Blob indexed by file ID",
-        "Upload method accepts file content, creates metadata, stores content, and returns the new file ID",
-        "Download method returns file content only if the caller is the owner",
-        "File content is persisted across canister upgrades"
-      ]
-    },
-    {
-      "id": "REQ-20",
-      "text": "Add React Query hooks (useFileMetadataList, useCreateFileMutation, useUpdateFileMutation, useDeleteFileMutation) in frontend/src/hooks/useQueries.ts following existing patterns for other entities",
+      "id": "REQ-1",
+      "text": "Replace the current animated gradient background with a Three.js 3D scene that continuously rotates and changes camera angles to create a calming, unique visual effect",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-12"
+          "msg-latest"
         ],
         "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
+          "یک تصویر سه بعدی بذار که دایما درحال جابجایی زوایای آن هستیم که آرامش‌بخش و عجیب هست"
         ]
       },
       "acceptanceCriteria": [
-        "useFileMetadataList fetches and caches the user's file metadata list",
-        "Mutation hooks invalidate relevant queries on success",
-        "Hooks use the actor returned by useActor and follow the error-handling pattern of existing hooks"
+        "3D scene replaces the existing animated gradient background on LoginScreen",
+        "Camera continuously rotates around the 3D object with smooth, calming motion",
+        "Camera angles change dynamically to create visual interest",
+        "Animation is smooth and does not impact application performance",
+        "3D scene works in both light and dark themes"
       ]
     },
     {
-      "id": "REQ-21",
-      "text": "Create a new Files page (frontend/src/pages/FilesPage.tsx) displaying a table or card list of file metadata with columns for filename, type, size, upload date, and actions (view, download, edit metadata, delete)",
+      "id": "REQ-2",
+      "text": "Implement the 3D scene using React Three Fiber with an abstract geometric shape that serves as the focal point for the rotating camera",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-12"
-        ],
-        "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
+          "msg-latest"
         ]
       },
       "acceptanceCriteria": [
-        "Files page renders a searchable/filterable list of file metadata using useFileMetadataList",
-        "Each file row shows filename, content type, size (formatted), and upload timestamp",
-        "Action buttons trigger appropriate dialogs or download flows",
-        "Page uses Persian (fa) labels from frontend/src/lib/fa.ts"
+        "React Three Fiber Canvas component is integrated into LoginScreen.tsx",
+        "3D geometry is abstract and visually interesting",
+        "Lighting setup enhances the calming effect",
+        "Scene renders efficiently without blocking UI interactions"
       ]
     },
     {
-      "id": "REQ-22",
-      "text": "Add a file upload dialog component (frontend/src/components/files/FileUploadDialog.tsx) with file input, drag-and-drop support, optional notes field, and progress indicator during upload",
+      "id": "REQ-3",
+      "text": "Configure camera animation to rotate continuously with varying speeds and angles to create a unique, mesmerizing effect that never repeats exactly",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-12"
-        ],
-        "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
+          "msg-latest"
         ]
       },
       "acceptanceCriteria": [
-        "Dialog allows selecting a file via input or drag-and-drop",
-        "Shows file preview (name, size, type) before upload",
-        "Displays upload progress or spinner during mutation",
-        "Closes and refreshes the file list on successful upload",
-        "Shows error toast on upload failure"
+        "Camera position changes smoothly over time",
+        "Rotation speeds vary subtly to avoid monotony",
+        "Camera always keeps the 3D object in view",
+        "Animation loop is seamless with no jarring transitions"
       ]
     },
     {
-      "id": "REQ-23",
-      "text": "Implement file download functionality that fetches file content from the backend and triggers a browser download with the correct filename and content type",
+      "id": "REQ-4",
+      "text": "Ensure the 3D background maintains visual harmony with the existing OKLCH color system and adapts to light/dark theme changes",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-12"
-        ],
-        "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
+          "msg-latest"
         ]
       },
       "acceptanceCriteria": [
-        "Download action calls backend download method and converts Blob to browser download",
-        "Downloaded file uses the original filename and MIME type",
-        "Shows loading indicator during download",
-        "Handles download errors with user-visible messages"
-      ]
-    },
-    {
-      "id": "REQ-24",
-      "text": "Add a file metadata edit dialog (frontend/src/components/files/FileMetadataEditDialog.tsx) allowing the user to update filename and notes without re-uploading the file content",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-12"
-        ],
-        "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Dialog pre-fills current filename and notes",
-        "Saves changes via useUpdateFileMutation",
-        "Refreshes file list on success",
-        "Shows validation and error feedback"
-      ]
-    },
-    {
-      "id": "REQ-25",
-      "text": "Add a 'Files' navigation item in the AppShell sidebar linking to the new Files page, using a file/folder icon and Persian label",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-12"
-        ],
-        "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Navigation item appears in the sidebar between existing items",
-        "Icon is a file or folder icon (e.g., lucide-react FileText or Folder)",
-        "Label uses Persian translation from fa.ts",
-        "Clicking navigates to /files route"
-      ]
-    },
-    {
-      "id": "REQ-26",
-      "text": "Update the Dashboard page to show a count of stored files using the file metadata list query, displayed in a card similar to existing inbox/tasks/notes cards",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-12"
-        ],
-        "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Dashboard fetches file metadata count via useFileMetadataList",
-        "Displays count in a card with a file icon and Persian label",
-        "Card links to /files page when clicked",
-        "Follows styling of existing dashboard cards"
-      ]
-    },
-    {
-      "id": "REQ-27",
-      "text": "Include file metadata in the data export/import functionality (frontend/src/components/settings/ImportExportSection.tsx) so users can back up and restore their file records along with other data",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-12"
-        ],
-        "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Export JSON includes file metadata records under a 'files' key",
-        "Import process restores file metadata records if present in the JSON",
-        "File content (binary data) is not included in export/import (only metadata)",
-        "Shows appropriate success/error feedback during import"
-      ]
-    },
-    {
-      "id": "REQ-28",
-      "text": "Add Persian translations for all file-related UI text (labels, buttons, messages, placeholders) to frontend/src/lib/fa.ts following existing naming conventions",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-12"
-        ],
-        "quotes": [
-          "مشاعبه فضای فایلها همه چی ممکنه ذخیره بشع"
-        ]
-      },
-      "acceptanceCriteria": [
-        "All new file UI strings have corresponding fa.ts entries",
-        "Translations are idiomatic Persian and consistent with existing app language",
-        "Keys follow the existing structure (e.g., files.upload, files.download)"
+        "3D scene colors are derived from the existing OKLCH theme variables",
+        "Material colors adjust appropriately when theme is toggled",
+        "3D background does not clash with foreground UI elements",
+        "Scene maintains adequate contrast for text readability"
       ]
     }
   ],
   "constraints": [
-    "Do not serve file binary content through HTTP endpoints; use canister query/update methods only",
-    "File storage must respect per-user authorization (Principal-based access control)",
-    "File content and metadata must be persisted across canister upgrades using stable storage",
-    "Do not modify immutable frontend paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui"
+    "Do not modify the backend (backend/main.mo)",
+    "Use React Three Fiber for 3D rendering implementation",
+    "Maintain compatibility with the existing Persian RTL layout",
+    "Do not change the authentication flow or Internet Identity integration",
+    "Preserve the existing LoginScreen component structure and branding elements"
   ],
   "nonGoals": [
-    "External file hosting or cloud storage integrations (e.g., AWS S3, Google Drive)",
-    "File sharing or public links (files are private to the owner)",
-    "Advanced file preview or editing (image viewer, PDF reader, video player)",
-    "File versioning or revision history",
-    "Batch file operations (multi-select delete, bulk upload)"
+    "Adding user controls to manipulate the 3D scene",
+    "Creating interactive 3D elements that respond to mouse/touch input",
+    "Implementing multiple 3D scenes or scene switching",
+    "Adding sound effects or audio to the animation",
+    "Creating photorealistic 3D renderings"
   ],
   "imageRequirements": {
     "required": [],

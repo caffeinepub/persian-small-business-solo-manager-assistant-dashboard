@@ -2,10 +2,12 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-react-query-hooks-usefilemetadatalist-usecreatefilemutation-useupdatefilemutation-usedeletefilemutation-in-frontend-src-hooks-usequeries-ts-following-existing-patterns-for-other-entities",
-      "featureTitle": "Add React Query hooks (useFileMetadataList, useCreateFileMutation, useUpdateFileMutation, useDeleteFileMutation) in frontend/src/hooks/useQueries.ts following existing patterns for other entities",
+      "featureId": "feature-replace-the-current-animated-gradient-background-with-a-three-js-3d-scene-that-continuously-rotates-and-changes-camera-angles-to-create-a-calming-unique-visual-effect",
+      "featureTitle": "Replace the current animated gradient background with a Three.js 3D scene that continuously rotates and changes camera angles to create a calming, unique visual effect",
       "files": [
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/components/LoginScreen.tsx",
+        "frontend/src/components/ThreeBackground.tsx",
+        "frontend/src/index.css"
       ],
       "components": [
         "authorization@4.0.0",
@@ -17,16 +19,16 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-20"
+        "REQ-1"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-create-a-new-files-page-frontend-src-pages-filespage-tsx-displaying-a-table-or-card-list-of-file-metadata-with-columns-for-filename-type-size-upload-date-and-actions-view-download-edit-metadata-delete",
-      "featureTitle": "Create a new Files page (frontend/src/pages/FilesPage.tsx) displaying a table or card list of file metadata with columns for filename, type, size, upload date, and actions (view, download, edit metadata, delete)",
+      "featureId": "feature-implement-the-3d-scene-using-react-three-fiber-with-an-abstract-geometric-shape-that-serves-as-the-focal-point-for-the-rotating-camera",
+      "featureTitle": "Implement the 3D scene using React Three Fiber with an abstract geometric shape that serves as the focal point for the rotating camera",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/pages/FilesPage.tsx"
+        "frontend/src/components/Scene3D.tsx",
+        "frontend/src/components/ThreeBackground.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -38,15 +40,16 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-21"
+        "REQ-2"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-a-file-upload-dialog-component-frontend-src-components-files-fileuploaddialog-tsx-with-file-input-drag-and-drop-support-optional-notes-field-and-progress-indicator-during-upload",
-      "featureTitle": "Add a file upload dialog component (frontend/src/components/files/FileUploadDialog.tsx) with file input, drag-and-drop support, optional notes field, and progress indicator during upload",
+      "featureId": "feature-configure-camera-animation-to-rotate-continuously-with-varying-speeds-and-angles-to-create-a-unique-mesmerizing-effect-that-never-repeats-exactly",
+      "featureTitle": "Configure camera animation to rotate continuously with varying speeds and angles to create a unique, mesmerizing effect that never repeats exactly",
       "files": [
-        "frontend/src/components/files/FileUploadDialog.tsx"
+        "frontend/src/components/CameraController.tsx",
+        "frontend/src/components/ThreeBackground.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -58,15 +61,17 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-22"
+        "REQ-3"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-implement-file-download-functionality-that-fetches-file-content-from-the-backend-and-triggers-a-browser-download-with-the-correct-filename-and-content-type",
-      "featureTitle": "Implement file download functionality that fetches file content from the backend and triggers a browser download with the correct filename and content type",
+      "featureId": "feature-ensure-the-3d-background-maintains-visual-harmony-with-the-existing-oklch-color-system-and-adapts-to-light-dark-theme-changes",
+      "featureTitle": "Ensure the 3D background maintains visual harmony with the existing OKLCH color system and adapts to light/dark theme changes",
       "files": [
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/components/Scene3D.tsx",
+        "frontend/src/components/ThreeBackground.tsx",
+        "frontend/src/hooks/useThemeColors.ts"
       ],
       "components": [
         "authorization@4.0.0",
@@ -78,107 +83,7 @@
         "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-23"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-a-file-metadata-edit-dialog-frontend-src-components-files-filemetadataeditdialog-tsx-allowing-the-user-to-update-filename-and-notes-without-re-uploading-the-file-content",
-      "featureTitle": "Add a file metadata edit dialog (frontend/src/components/files/FileMetadataEditDialog.tsx) allowing the user to update filename and notes without re-uploading the file content",
-      "files": [
-        "frontend/src/components/files/FileMetadataEditDialog.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-24"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-a-files-navigation-item-in-the-appshell-sidebar-linking-to-the-new-files-page-using-a-file-folder-icon-and-persian-label",
-      "featureTitle": "Add a 'Files' navigation item in the AppShell sidebar linking to the new Files page, using a file/folder icon and Persian label",
-      "files": [
-        "frontend/src/components/AppShell.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-25"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-update-the-dashboard-page-to-show-a-count-of-stored-files-using-the-file-metadata-list-query-displayed-in-a-card-similar-to-existing-inbox-tasks-notes-cards",
-      "featureTitle": "Update the Dashboard page to show a count of stored files using the file metadata list query, displayed in a card similar to existing inbox/tasks/notes cards",
-      "files": [
-        "frontend/src/pages/DashboardPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-26"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-include-file-metadata-in-the-data-export-import-functionality-frontend-src-components-settings-importexportsection-tsx-so-users-can-back-up-and-restore-their-file-records-along-with-other-data",
-      "featureTitle": "Include file metadata in the data export/import functionality (frontend/src/components/settings/ImportExportSection.tsx) so users can back up and restore their file records along with other data",
-      "files": [
-        "frontend/src/components/settings/ImportExportSection.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-27"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-persian-translations-for-all-file-related-ui-text-labels-buttons-messages-placeholders-to-frontend-src-lib-fa-ts-following-existing-naming-conventions",
-      "featureTitle": "Add Persian translations for all file-related UI text (labels, buttons, messages, placeholders) to frontend/src/lib/fa.ts following existing naming conventions",
-      "files": [
-        "frontend/src/lib/fa.ts"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-28"
+        "REQ-4"
       ],
       "confidence": "high"
     }

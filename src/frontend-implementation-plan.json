@@ -1,163 +1,104 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add file storage module for managing content",
+  "title": "Add 3D rotating background with continuously changing camera angles",
   "requirements": [
     {
-      "id": "REQ-20",
-      "summary": "Add React Query hooks for file metadata operations",
+      "id": "REQ-1",
+      "summary": "Replace the current animated gradient background with a Three.js 3D scene that continuously rotates and changes camera angles to create a calming, unique visual effect",
       "acceptanceCriteria": [
-        "useFileMetadataList fetches and caches the user's file metadata list",
-        "Mutation hooks invalidate relevant queries on success",
-        "Hooks use the actor returned by useActor and follow the error-handling pattern of existing hooks"
+        "3D scene replaces the existing animated gradient background on LoginScreen",
+        "Camera continuously rotates around the 3D object with smooth, calming motion",
+        "Camera angles change dynamically to create visual interest",
+        "Animation is smooth and does not impact application performance",
+        "3D scene works in both light and dark themes"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Add useFileMetadataList query hook to fetch file metadata using actor.listFileMetadata(). Add useCreateFileMutation, useUpdateFileMutation, and useDeleteFileMutation hooks that call actor.createFileMetadata, actor.updateFileMetadata, and actor.deleteFileMetadata respectively. Each mutation hook should invalidate the 'fileMetadata' query key on success. Follow the existing patterns for error handling, toast notifications, and query invalidation used by other entity hooks in this file."
-        }
-      ]
-    },
-    {
-      "id": "REQ-21",
-      "summary": "Create Files page displaying file metadata list with actions and wire into router",
-      "acceptanceCriteria": [
-        "Files page renders a searchable/filterable list of file metadata using useFileMetadataList",
-        "Each file row shows filename, content type, size (formatted), and upload timestamp",
-        "Action buttons trigger appropriate dialogs or download flows",
-        "Page uses Persian (fa) labels from frontend/src/lib/fa.ts",
-        "FilesPage is accessible via /files route and protected by AuthGate"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/FilesPage.tsx",
+          "path": "frontend/src/components/ThreeBackground.tsx",
           "operation": "create",
-          "description": "Create a new FilesPage component that uses useFileMetadataList hook to fetch and display file metadata. Render a table or card list showing filename, contentType, size (formatted in KB/MB), and uploadedAt timestamp. Include a search input to filter files by filename. Add action buttons for each file: view/download (using REQ-23), edit metadata (opening FileMetadataEditDialog from REQ-24), and delete (with confirmation). Include a floating action button or header button to open the FileUploadDialog from REQ-22. Use Persian labels from fa.ts throughout. Follow the layout and styling patterns of WorkInboxPage.tsx and NotesPage.tsx."
+          "description": "Create a new React component that renders a React Three Fiber Canvas with a 3D rotating scene. This component will encapsulate the entire 3D background logic including the Canvas setup, scene configuration, and will be positioned to fill the background area. The component should accept theme-aware props to adapt colors based on light/dark mode."
         },
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/components/LoginScreen.tsx",
           "operation": "modify",
-          "description": "Import FilesPage from './pages/FilesPage'. Add a new route for '/files' path that renders FilesPage wrapped in AuthGate. Position it in the Routes alongside existing page routes (DashboardPage, WorkInboxPage, TasksTodayPage, PlannerPage, NotesPage, SettingsPage, OnboardingWizardPage). Ensure the route is protected by authentication checks."
+          "description": "Replace the existing animated gradient background with the new ThreeBackground component. Remove CSS-based gradient animation classes and integrate the ThreeBackground component as a full-screen background layer positioned absolutely behind the login content. Ensure the ThreeBackground component receives the current theme state to adapt its colors appropriately."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Remove or comment out the existing @keyframes gradient-rotate animation and any related background-animation classes that are no longer needed after replacing with the 3D scene. Preserve all other OKLCH theme variables and global styles as they will be used by the 3D scene for color theming."
         }
       ]
     },
     {
-      "id": "REQ-22",
-      "summary": "Add file upload dialog with drag-and-drop support",
+      "id": "REQ-2",
+      "summary": "Implement the 3D scene using React Three Fiber with an abstract geometric shape that serves as the focal point for the rotating camera",
       "acceptanceCriteria": [
-        "Dialog allows selecting a file via input or drag-and-drop",
-        "Shows file preview (name, size, type) before upload",
-        "Displays upload progress or spinner during mutation",
-        "Closes and refreshes the file list on successful upload",
-        "Shows error toast on upload failure"
+        "React Three Fiber Canvas component is integrated into LoginScreen.tsx",
+        "3D geometry is abstract and visually interesting",
+        "Lighting setup enhances the calming effect",
+        "Scene renders efficiently without blocking UI interactions"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/files/FileUploadDialog.tsx",
+          "path": "frontend/src/components/Scene3D.tsx",
           "operation": "create",
-          "description": "Create FileUploadDialog component accepting open/onOpenChange props. Implement a file input with drag-and-drop support (use onDragOver, onDrop events). Display selected file preview showing name, size, and type before upload. Include an optional notes/tags textarea. On submit, read the file as Uint8Array, construct a FileMetadata object (generate id, set owner to current principal, capture file properties, set uploadedAt to current timestamp), then call useCreateFileMutation with the metadata. Use ExternalBlob.fromBytes for the file content and call actor.createFileMetadata. Show a progress spinner during upload. On success, close dialog and show success toast. On error, display error toast. Use Persian labels from fa.ts. Follow the dialog pattern of NoteFormDialog.tsx and TaskFormDialog.tsx. Verify the blob-storage component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-23",
-      "summary": "Implement file download functionality",
-      "acceptanceCriteria": [
-        "Download action calls backend download method and converts Blob to browser download",
-        "Downloaded file uses the original filename and MIME type",
-        "Shows loading indicator during download",
-        "Handles download errors with user-visible messages"
-      ],
-      "file_operations": [
+          "description": "Create a Scene3D component that contains the 3D geometry, lighting, and materials for the rotating background. This component should render an abstract geometric shape (such as a torus knot, icosahedron with subdivisions, or custom geometry) with appropriate materials. Add ambient and directional lighting to create depth and enhance the calming visual effect. The geometry and materials should accept color props derived from OKLCH theme variables."
+        },
         {
-          "path": "frontend/src/hooks/useQueries.ts",
+          "path": "frontend/src/components/ThreeBackground.tsx",
           "operation": "modify",
-          "description": "Add a useDownloadFileMutation hook that accepts a file ID and FileMetadata. The mutation function should call a backend method to retrieve the file content (if one exists, otherwise use ExternalBlob methods to fetch bytes), create a Blob with the correct contentType, generate a download URL using URL.createObjectURL, create a temporary anchor element, set its href to the blob URL and download attribute to the fileName, trigger a click, then revoke the object URL. Show a loading toast during download and success/error toasts afterward. Use the actor from useActor. Verify the blob-storage component's usage instructions before implementing."
+          "description": "Import and integrate the Scene3D component within the Canvas. Configure Canvas props for optimal performance including gl settings, dpr (device pixel ratio), and frameloop settings. Position the Canvas to cover the full background area without interfering with UI interactions by ensuring pointer-events are properly configured."
         }
       ]
     },
     {
-      "id": "REQ-24",
-      "summary": "Add file metadata edit dialog",
+      "id": "REQ-3",
+      "summary": "Configure camera animation to rotate continuously with varying speeds and angles to create a unique, mesmerizing effect that never repeats exactly",
       "acceptanceCriteria": [
-        "Dialog pre-fills current filename and notes",
-        "Saves changes via useUpdateFileMutation",
-        "Refreshes file list on success",
-        "Shows validation and error feedback"
+        "Camera position changes smoothly over time",
+        "Rotation speeds vary subtly to avoid monotony",
+        "Camera always keeps the 3D object in view",
+        "Animation loop is seamless with no jarring transitions"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/files/FileMetadataEditDialog.tsx",
+          "path": "frontend/src/components/CameraController.tsx",
           "operation": "create",
-          "description": "Create FileMetadataEditDialog component accepting open, onOpenChange, and fileMetadata props. Pre-fill a form with fileName and notes fields from the provided fileMetadata. On submit, call useUpdateFileMutation with the file id and updated metadata object. Close dialog on success and show success toast. Display validation errors for empty fileName. Use Persian labels from fa.ts. Follow the form dialog pattern of ChannelProfileFormDialog.tsx."
+          "description": "Create a CameraController component using React Three Fiber's useFrame hook to animate the camera position and rotation continuously. Implement smooth orbital motion using trigonometric functions with varying speeds (e.g., sine and cosine with different frequencies) to create non-repeating patterns. Use lookAt to ensure the camera always focuses on the 3D object. Add subtle variations in radius, elevation angles, and rotation speeds to create the mesmerizing, calming effect requested."
+        },
+        {
+          "path": "frontend/src/components/ThreeBackground.tsx",
+          "operation": "modify",
+          "description": "Import and add the CameraController component inside the Canvas. Ensure the CameraController is properly positioned in the scene hierarchy so it can access and control the default camera or a custom PerspectiveCamera. Configure initial camera position and field of view for optimal viewing of the 3D scene."
         }
       ]
     },
     {
-      "id": "REQ-25",
-      "summary": "Add Files navigation item to AppShell sidebar",
+      "id": "REQ-4",
+      "summary": "Ensure the 3D background maintains visual harmony with the existing OKLCH color system and adapts to light/dark theme changes",
       "acceptanceCriteria": [
-        "Navigation item appears in the sidebar between existing items",
-        "Icon is a file or folder icon (e.g., lucide-react FileText or Folder)",
-        "Label uses Persian translation from fa.ts",
-        "Clicking navigates to /files route"
+        "3D scene colors are derived from the existing OKLCH theme variables",
+        "Material colors adjust appropriately when theme is toggled",
+        "3D background does not clash with foreground UI elements",
+        "Scene maintains adequate contrast for text readability"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/AppShell.tsx",
-          "operation": "modify",
-          "description": "Add a new navigation item for Files in the sidebar navigation array. Use FileText or Folder icon from lucide-react. Set the link to '/files' and use the Persian label from fa.ts (add 'files' key if needed). Position it between existing nav items (e.g., after Notes or before Settings). Follow the existing nav item structure."
-        }
-      ]
-    },
-    {
-      "id": "REQ-26",
-      "summary": "Update Dashboard to show file count card",
-      "acceptanceCriteria": [
-        "Dashboard fetches file metadata count via useFileMetadataList",
-        "Displays count in a card with a file icon and Persian label",
-        "Card links to /files page when clicked",
-        "Follows styling of existing dashboard cards"
-      ],
-      "file_operations": [
+          "path": "frontend/src/hooks/useThemeColors.ts",
+          "operation": "create",
+          "description": "Create a custom React hook that reads OKLCH CSS custom properties from the document root and converts them to RGB or hex color values compatible with Three.js materials. This hook should monitor theme changes and return color values for primary, secondary, background, and accent colors. Use getComputedStyle to extract CSS variables and parse OKLCH values into formats Three.js can consume."
+        },
         {
-          "path": "frontend/src/pages/DashboardPage.tsx",
+          "path": "frontend/src/components/Scene3D.tsx",
           "operation": "modify",
-          "description": "Import and use useFileMetadataList hook to fetch file metadata. Add a new dashboard card displaying the count of files (fileMetadata.length). Use a FileText or Folder icon from lucide-react. Apply Persian label from fa.ts. Make the card clickable and navigate to '/files' on click. Position the card in the grid alongside existing cards for inbox, tasks, content plans, and notes. Follow the styling and structure of existing dashboard cards."
-        }
-      ]
-    },
-    {
-      "id": "REQ-27",
-      "summary": "Include file metadata in data export/import functionality",
-      "acceptanceCriteria": [
-        "Export JSON includes file metadata records under a 'files' key",
-        "Import process restores file metadata records if present in the JSON",
-        "File content (binary data) is not included in export/import (only metadata)",
-        "Shows appropriate success/error feedback during import"
-      ],
-      "file_operations": [
+          "description": "Use the useThemeColors hook to obtain theme-aware colors and apply them to the 3D geometry materials, lights, and fog (if used). Ensure material colors update reactively when the theme changes. Configure material properties (such as opacity, metalness, roughness) to ensure the 3D background remains subtle and does not overpower foreground UI elements. Test color combinations to maintain adequate contrast for text readability in both light and dark themes."
+        },
         {
-          "path": "frontend/src/components/settings/ImportExportSection.tsx",
+          "path": "frontend/src/components/ThreeBackground.tsx",
           "operation": "modify",
-          "description": "Update the export functionality to include fileMetadata from useFileMetadataList in the exported JSON under a 'fileMetadata' key (matching the ExportData structure from backend.d.ts). Update the import functionality to check for fileMetadata in the imported JSON and call useCreateFileMutation for each file metadata record (without binary content). Show progress feedback during import and success/error toasts. Ensure the exported JSON structure matches the ExportData type from backend interface (fileMetadata field already exists)."
-        }
-      ]
-    },
-    {
-      "id": "REQ-28",
-      "summary": "Add Persian translations for file-related UI text",
-      "acceptanceCriteria": [
-        "All new file UI strings have corresponding fa.ts entries",
-        "Translations are idiomatic Persian and consistent with existing app language",
-        "Keys follow the existing structure (e.g., files.upload, files.download)"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/lib/fa.ts",
-          "operation": "modify",
-          "description": "Add a new 'files' section to the fa translation object with keys for all file-related UI text: navigation label ('files'), page title, upload button, download action, edit action, delete action, file name label, content type label, size label, upload date label, notes/tags label, upload dialog title, upload success/error messages, download success/error messages, edit dialog title, delete confirmation message, and any other labels needed by FilesPage, FileUploadDialog, and FileMetadataEditDialog. Use idiomatic Persian translations consistent with existing app terminology. Follow the nested structure pattern used for other sections (e.g., workInbox, tasks, notes)."
+          "description": "Pass theme context or theme colors as props to Scene3D and CameraController if needed. Ensure the Canvas background color or fog color adapts to the current theme using OKLCH-derived colors. Add CSS styling to ensure the Canvas is properly layered behind the login content with appropriate z-index and pointer-events settings to prevent interaction conflicts."
         }
       ]
     }

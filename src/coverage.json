@@ -1,165 +1,84 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-18T23:34:29.936Z",
+  "generatedAt": "2026-02-19T00:17:33.735Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 12,
-    "implemented": 9,
+    "total": 4,
+    "implemented": 4,
     "items": [
       {
-        "id": "REQ-17",
-        "summary": "Add a backend data model for file metadata records including id, owner (Principal), filename, contentType, size (bytes), uploadedAt (timestamp), and optional notes/tags fields, stored per-user like other entities",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-18",
-        "summary": "Add backend methods to create, list, get, update, and delete file metadata records, with authorization checks ensuring users can only access their own files",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-19",
-        "summary": "Add backend storage for file binary content using stable data structures (e.g., stable HashMap mapping file ID to Blob), and provide upload/download methods that enforce per-user authorization",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-20",
-        "summary": "Add React Query hooks (useFileMetadataList, useCreateFileMutation, useUpdateFileMutation, useDeleteFileMutation) in frontend/src/hooks/useQueries.ts following existing patterns for other entities",
+        "id": "REQ-1",
+        "summary": "Replace the current animated gradient background with a Three.js 3D scene that continuously rotates and changes camera angles to create a calming, unique visual effect",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/components/ThreeBackground.tsx",
+          "frontend/src/components/LoginScreen.tsx",
+          "frontend/src/index.css"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/components/ThreeBackground.tsx",
+          "frontend/src/components/LoginScreen.tsx",
+          "frontend/src/index.css"
         ]
       },
       {
-        "id": "REQ-21",
-        "summary": "Create a new Files page (frontend/src/pages/FilesPage.tsx) displaying a table or card list of file metadata with columns for filename, type, size, upload date, and actions (view, download, edit metadata, delete)",
+        "id": "REQ-2",
+        "summary": "Implement the 3D scene using React Three Fiber with an abstract geometric shape that serves as the focal point for the rotating camera",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/FilesPage.tsx",
-          "frontend/src/App.tsx"
+          "frontend/src/components/Scene3D.tsx",
+          "frontend/src/components/ThreeBackground.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/FilesPage.tsx",
-          "frontend/src/App.tsx"
+          "frontend/src/components/Scene3D.tsx",
+          "frontend/src/components/ThreeBackground.tsx"
         ]
       },
       {
-        "id": "REQ-22",
-        "summary": "Add a file upload dialog component (frontend/src/components/files/FileUploadDialog.tsx) with file input, drag-and-drop support, optional notes field, and progress indicator during upload",
+        "id": "REQ-3",
+        "summary": "Configure camera animation to rotate continuously with varying speeds and angles to create a unique, mesmerizing effect that never repeats exactly",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/files/FileUploadDialog.tsx"
+          "frontend/src/components/CameraController.tsx",
+          "frontend/src/components/ThreeBackground.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/files/FileUploadDialog.tsx"
+          "frontend/src/components/CameraController.tsx",
+          "frontend/src/components/ThreeBackground.tsx"
         ]
       },
       {
-        "id": "REQ-23",
-        "summary": "Implement file download functionality that fetches file content from the backend and triggers a browser download with the correct filename and content type",
+        "id": "REQ-4",
+        "summary": "Ensure the 3D background maintains visual harmony with the existing OKLCH color system and adapts to light/dark theme changes",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/hooks/useThemeColors.ts",
+          "frontend/src/components/Scene3D.tsx",
+          "frontend/src/components/ThreeBackground.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useQueries.ts"
-        ]
-      },
-      {
-        "id": "REQ-24",
-        "summary": "Add a file metadata edit dialog (frontend/src/components/files/FileMetadataEditDialog.tsx) allowing the user to update filename and notes without re-uploading the file content",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/files/FileMetadataEditDialog.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/files/FileMetadataEditDialog.tsx"
-        ]
-      },
-      {
-        "id": "REQ-25",
-        "summary": "Add a 'Files' navigation item in the AppShell sidebar linking to the new Files page, using a file/folder icon and Persian label",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/AppShell.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/AppShell.tsx"
-        ]
-      },
-      {
-        "id": "REQ-26",
-        "summary": "Update the Dashboard page to show a count of stored files using the file metadata list query, displayed in a card similar to existing inbox/tasks/notes cards",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/DashboardPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/DashboardPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-27",
-        "summary": "Include file metadata in the data export/import functionality (frontend/src/components/settings/ImportExportSection.tsx) so users can back up and restore their file records along with other data",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/settings/ImportExportSection.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/settings/ImportExportSection.tsx"
-        ]
-      },
-      {
-        "id": "REQ-28",
-        "summary": "Add Persian translations for all file-related UI text (labels, buttons, messages, placeholders) to frontend/src/lib/fa.ts following existing naming conventions",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/lib/fa.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/lib/fa.ts"
+          "frontend/src/hooks/useThemeColors.ts",
+          "frontend/src/components/Scene3D.tsx",
+          "frontend/src/components/ThreeBackground.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/blob-storage/Mixin.mo",
-    "backend/blob-storage/Storage.mo",
-    "backend/main.mo",
     "build-request.json",
-    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
-    "frontend/src/components/AppShell.tsx",
-    "frontend/src/components/files/FileMetadataEditDialog.tsx",
-    "frontend/src/components/files/FileUploadDialog.tsx",
-    "frontend/src/components/settings/ChannelProfilesSection.tsx",
-    "frontend/src/components/settings/ImportExportSection.tsx",
-    "frontend/src/config.ts",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/lib/fa.ts",
-    "frontend/src/pages/DashboardPage.tsx",
-    "frontend/src/pages/FilesPage.tsx",
-    "frontend/src/pages/PlannerPage.tsx",
-    "frontend/src/pages/WorkInboxPage.tsx",
+    "frontend/src/components/CameraController.tsx",
+    "frontend/src/components/LoginScreen.tsx",
+    "frontend/src/components/Scene3D.tsx",
+    "frontend/src/components/ThreeBackground.tsx",
+    "frontend/src/hooks/useThemeColors.ts",
+    "frontend/src/index.css",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

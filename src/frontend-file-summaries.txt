@@ -7,7 +7,7 @@
   "frontend/src/pages/DashboardPage.tsx": "Dashboard page showing overview cards including new file count card that links to files page.",
   "frontend/src/pages/WorkInboxPage.tsx": "Work inbox page with filtering, search, and CRUD operations for work items, using a helper function to safely access channel translation strings.",
   "frontend/src/pages/PlannerPage.tsx": "Content planner page with upcoming and by-channel views, CRUD operations for content plans, using helper functions to safely access translation strings for channels and content types.",
-  "frontend/src/index.css": "Global CSS file with OKLCH color system for light and dark modes, featuring a teal/cyan primary color palette and RTL support for Persian text.",
+  "frontend/src/index.css": "Global CSS with OKLCH color system updated to vibrant neon colors (purples, magentas, cyans, yellows), RTL support, and 3D background container styles with reduced-motion fallback.",
   "frontend/index.html": "HTML entry point with PWA manifest link, theme color, and app icons for installability.",
   "frontend/public/manifest.webmanifest": "Web app manifest defining app name, icons, display mode, and theme for PWA installation.",
   "frontend/public/sw.js": "Service worker implementing app shell caching, offline fallback, and safe update handling.",
@@ -27,5 +27,10 @@
   "frontend/src/components/files/FileUploadDialog.tsx": "Dialog component for uploading files with drag-and-drop support, file preview, and notes field.",
   "frontend/src/components/files/FileMetadataEditDialog.tsx": "Dialog component for editing file metadata (filename and notes) with form validation.",
   "frontend/src/App.tsx": "Main app component with routing including new /files route protected by AuthGate.",
-  "frontend/src/components/settings/ImportExportSection.tsx": "Import/export section updated to handle file metadata in exported JSON with progress feedback."
+  "frontend/src/components/settings/ImportExportSection.tsx": "Import/export section updated to handle file metadata in exported JSON with progress feedback.",
+  "frontend/src/components/LoginScreen.tsx": "Login screen component with 3D rotating background replacing the animated gradient, featuring app logo and branding centered over the Three.js scene with RTL Persian layout.",
+  "frontend/src/hooks/useThemeColors.ts": "Custom React hook that reads OKLCH CSS variables from the document root and converts them to RGB hex colors for Three.js material compatibility, with automatic updates on theme changes.",
+  "frontend/src/components/CameraController.tsx": "React Three Fiber component that animates the camera position using useFrame hook with smooth orbital motion, varying speeds, and non-repeating patterns for a mesmerizing effect.",
+  "frontend/src/components/Scene3D.tsx": "React Three Fiber scene component containing a rotating torus knot geometry with neon-colored lights, wireframe icosahedron overlay, and theme-aware materials using OKLCH-derived colors.",
+  "frontend/src/components/ThreeBackground.tsx": "Wrapper component that sets up the React Three Fiber Canvas with Scene3D and CameraController, configured for transparent background and optimal performance."
 }
